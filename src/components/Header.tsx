@@ -8,13 +8,13 @@ export function Header() {
     <header className="border-b border-line bg-bg pt-[env(safe-area-inset-top)]">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4">
         <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-          <a href={site.youtubeUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 rounded-md">
+          <a href={site.youtubeUrl} target="_blank" rel="noopener noreferrer" className="-my-1 shrink-0">
             <Image
               src="/brand/canal-do-benja-header.webp"
               alt="Canal do Benja"
-              width={169}
-              height={148}
-              className="h-10 w-auto rounded-md"
+              width={281}
+              height={286}
+              className="h-12 w-auto drop-shadow-[0_1px_2px_rgb(0_0_0/0.6)]"
               preload
             />
             <span className="sr-only"> no YouTube (abre em nova aba)</span>
