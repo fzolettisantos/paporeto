@@ -1,0 +1,155 @@
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, Brain, Megaphone, PenTool, Target, Users } from "lucide-react";
+import faces from "@/generated/character-faces.json";
+import illustrations from "@/generated/ranking-illustrations.json";
+import { PERSONAGENS } from "@/config/personagens";
+import { RANKINGS } from "@/config/rankings";
+import { site, withBase } from "@/config/site";
+import type { RankingSlug } from "@/types";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
+import { ShowSchedule } from "./ShowSchedule";
+
+const ILLUSTRATIONS = illustrations as Partial<Record<RankingSlug, { src: string; width: number; height: number }>>;
+const FACES = faces as Record<string, string[]>;
+const RANK_ICONS = { "falou-merda": Megaphone, sabio: Brain, "bala-do-veio": Target } as const;
+
+/** Página inicial: horário do programa, atalhos para os rankings, personagens e charges. */
+export function IndexPage() {
+  return (
+    <>
+      <Header />
+      <main>
+        <section className="bg-stands">
+          <div className="mx-auto max-w-5xl px-4 pb-6 pt-7 sm:pb-10 sm:pt-12">
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-yellow">Papo Reto Ranking</p>
+            <h1 className="mt-2 font-display text-[36px] uppercase leading-[1.02] sm:text-6xl">
+              Aqui a resenha entra em campo. <span className="text-yellow">E o bom senso fica no banco.</span>
+            </h1>
+            <p className="mt-3 max-w-2xl text-[16px] leading-snug text-muted sm:text-lg">
+              Futebol raiz, corneta sem VAR, opiniões duvidosas e muita resenha. Agora é sua vez de decidir quem
+              merece o topo — ou a vergonha.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link
+                href={withBase("/falou-merda")}
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-yellow px-5 font-extrabold uppercase tracking-wide text-ink transition-transform hover:-translate-y-0.5"
+              >
+                Ver os rankings <ArrowRight aria-hidden className="size-5" />
+              </Link>
+              <Link
+                href={withBase("/personagens")}
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-line bg-surface px-5 font-extrabold uppercase tracking-wide text-white transition-colors hover:border-yellow"
+              >
+                <Users aria-hidden className="size-5" /> Conheça a bancada
+              </Link>
+            </div>
+            <p className="mt-4 font-display text-lg uppercase tracking-wide text-yellow sm:text-2xl">{site.tagline}</p>
+          </div>
+        </section>
+
+        <div className="mx-auto max-w-5xl space-y-10 px-4 pt-6 sm:pt-8">
+          <ShowSchedule />
+
+          <section aria-labelledby="rankings-title">
+            <h2 id="rankings-title" className="font-display text-[28px] uppercase leading-none sm:text-4xl">
+              Os rankings da resenha
+            </h2>
+            <ul className="mt-4 grid gap-4 sm:grid-cols-3">
+              {(Object.keys(RANKINGS) as RankingSlug[]).map((slug) => {
+                const copy = RANKINGS[slug];
+                const art = ILLUSTRATIONS[slug];
+                const Icon = RANK_ICONS[slug];
+                return (
+                  <li key={slug}>
+                    <Link
+                      href={withBase(`/${slug}`)}
+                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-[transform,border-color] hover:-translate-y-1 hover:border-yellow"
+                    >
+                      {art ? (
+                        <div className="relative aspect-[4/3] overflow-hidden bg-bg">
+                          <Image
+                            src={art.src}
+                            alt=""
+                            fill
+                            sizes="(min-width: 640px) 33vw, 100vw"
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                      ) : null}
+                      <div className="flex flex-1 flex-col p-4">
+                        <p className={`flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.16em] ${copy.kind === "positive" ? "text-green" : "text-red"}`}>
+                          <Icon aria-hidden className="size-4" />
+                          {copy.mode === "static" ? "Ranking do programa" : "Vote toda semana"}
+                        </p>
+                        <h3 className="mt-1 font-display text-2xl uppercase leading-tight">{copy.title}</h3>
+                        <p className="mt-1 text-[15px] leading-snug text-muted">{copy.subtitle}</p>
+                        <span className="mt-auto inline-flex items-center gap-1 pt-3 text-sm font-extrabold uppercase text-yellow">
+                          {copy.mode === "static" ? "Ver quem tá na mira" : "Ver e votar"}
+                          <ArrowRight aria-hidden className="size-4 transition-transform group-hover:translate-x-1" />
+                        </span>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+
+          <section aria-labelledby="bancada-title" className="rounded-3xl border border-line bg-surface p-5 sm:p-7">
+            <div className="flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <h2 id="bancada-title" className="font-display text-[28px] uppercase leading-none sm:text-4xl">
+                  A bancada
+                </h2>
+                <p className="mt-1 text-muted">Sete figuras, um hospício esportivo. Abra a ficha criminal de cada um.</p>
+              </div>
+              <Link
+                href={withBase("/personagens")}
+                className="inline-flex min-h-11 items-center gap-1 text-sm font-extrabold uppercase text-yellow"
+              >
+                Ver fichas <ArrowRight aria-hidden className="size-4" />
+              </Link>
+            </div>
+            <ul className="mt-5 grid grid-cols-4 gap-3 sm:grid-cols-7">
+              {PERSONAGENS.map((p) => {
+                const face = FACES[p.slug]?.[0];
+                return (
+                  <li key={p.slug}>
+                    <Link href={withBase("/personagens")} className="group flex flex-col items-center gap-1.5 text-center">
+                      <span
+                        className="relative size-16 overflow-hidden rounded-full bg-[#EDE3CC] shadow-[0_0_0_3px_var(--ring)] transition-transform group-hover:-translate-y-1 group-hover:rotate-3 sm:size-20"
+                        style={{ ["--ring" as string]: p.accent }}
+                      >
+                        {face ? <Image src={face} alt="" fill sizes="80px" className="object-cover" /> : null}
+                      </span>
+                      <span className="text-[12px] font-bold leading-tight">{p.name}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+
+          <section aria-labelledby="charges-title">
+            <Link
+              href={withBase("/charges")}
+              className="group flex items-center gap-4 rounded-3xl border border-line bg-surface p-5 transition-colors hover:border-yellow sm:p-7"
+            >
+              <span className="inline-flex size-14 shrink-0 items-center justify-center rounded-2xl bg-yellow/15 text-yellow">
+                <PenTool aria-hidden className="size-7" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span id="charges-title" className="block font-display text-2xl uppercase leading-tight">As Charges do Oberdan</span>
+                <span className="block text-muted">Se virou charge, virou história.</span>
+              </span>
+              <ArrowRight aria-hidden className="size-6 shrink-0 text-yellow transition-transform group-hover:translate-x-1" />
+            </Link>
+          </section>
+        </div>
+      </main>
+      <Footer showCaricatureCredit />
+    </>
+  );
+}

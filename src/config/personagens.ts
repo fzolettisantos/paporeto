@@ -27,11 +27,14 @@ export interface Personagem {
   diagnostico: string;
   /** Cor de destaque da ficha (time do coração). */
   accent: string;
+  /** Usuário do Instagram (sem @). */
+  instagram?: string;
 }
 
 export const PERSONAGENS: Personagem[] = [
   {
     slug: "benja",
+    instagram: "benjaminbackoficial",
     name: "Benja",
     nickname: "O Silvio Santos da mídia esportiva",
     realName: "Benjamin Back",
@@ -48,6 +51,7 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     slug: "mano",
+    instagram: "mauricioborgesmano",
     name: "Mano",
     nickname: "Sábio",
     realName: "Maurício Borges",
@@ -64,6 +68,7 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     slug: "kleber",
+    instagram: "klebergiacomazzi30",
     name: "Kléber Gladiador",
     nickname: "Monstro do Palestra",
     realName: "Ex-atacante",
@@ -80,6 +85,7 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     slug: "veio-tricolor",
+    instagram: "silvioalbertinjunior",
     name: "Véio Fanático Tricolor",
     nickname: "O terror da berinjela",
     realName: "Silvio Albertin Junior",
@@ -96,6 +102,7 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     slug: "joneta",
+    instagram: "jonasorlando",
     name: "Joneta",
     nickname: "Dedeta",
     realName: "Jonas Orlando",
@@ -112,6 +119,7 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     slug: "carabina",
+    instagram: "soudoapito",
     name: "Carabina",
     nickname: "Mestre das regras (respeita o Carabas)",
     realName: "Paulo Caravina",
@@ -128,6 +136,7 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     slug: "gadu",
+    instagram: "silvapcaique",
     name: "Caique Silva",
     nickname: "O Gadu Boyceta",
     realName: "Jornalista esportivo",

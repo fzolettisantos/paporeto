@@ -6,6 +6,7 @@ import { ChevronDown, Flame, RefreshCw, ShieldAlert, Stethoscope, Target, Zap } 
 import { useId, useState } from "react";
 import faces from "@/generated/character-faces.json";
 import { PERSONAGENS, PERSONAGENS_COPY, RISCO_LABEL, type Personagem } from "@/config/personagens";
+import { InstagramIcon } from "./InstagramIcon";
 import { PlaceholderFace } from "./PlaceholderFace";
 
 const FACES = faces as Record<string, string[]>;
@@ -125,6 +126,17 @@ function PersonagemCard({ personagem, index }: { personagem: Personagem; index: 
             <p className="mt-1.5 text-[13px] font-semibold leading-snug text-muted">
               {personagem.realName} • {personagem.role}
             </p>
+            {personagem.instagram ? (
+              <a
+                href={`https://www.instagram.com/${personagem.instagram}/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex min-h-9 items-center gap-1.5 rounded-full border border-line bg-bg/60 px-3 text-[13px] font-bold text-white transition-colors hover:border-yellow hover:text-yellow"
+              >
+                <InstagramIcon className="size-4" />@{personagem.instagram}
+                <span className="sr-only"> no Instagram (abre em nova aba)</span>
+              </a>
+            ) : null}
             <blockquote className="relative mt-3 rounded-xl bg-bg/60 px-3 py-2.5 text-[15px] font-semibold italic leading-snug">
               <span aria-hidden className="absolute -top-3 left-2 font-display text-4xl not-italic leading-none text-yellow">
                 “
