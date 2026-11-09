@@ -74,3 +74,19 @@ describe("caricaturas", () => {
     expect(RANKINGS.sabio.phrases.top).toContain(phrase);
   });
 });
+
+import { parseInstagramPostUrl } from "@/config/charges";
+
+describe("links do Instagram", () => {
+  it("aceita posts e reels e normaliza", () => {
+    expect(parseInstagramPostUrl("https://www.instagram.com/p/DAbc123xyz/?igsh=abc")).toBe("https://www.instagram.com/p/DAbc123xyz/");
+    expect(parseInstagramPostUrl("https://instagram.com/reel/C9xYz_12-ab")).toBe("https://www.instagram.com/reel/C9xYz_12-ab/");
+    expect(parseInstagramPostUrl("https://www.instagram.com/oberdan_machado/p/DAbc123xyz/")).toBe("https://www.instagram.com/p/DAbc123xyz/");
+  });
+  it("recusa perfil, stories e outros sites", () => {
+    expect(parseInstagramPostUrl("https://www.instagram.com/oberdan_machado/")).toBeNull();
+    expect(parseInstagramPostUrl("https://www.instagram.com/stories/oberdan_machado/123/")).toBeNull();
+    expect(parseInstagramPostUrl("https://evil.com/p/DAbc123xyz/")).toBeNull();
+    expect(parseInstagramPostUrl("nada")).toBeNull();
+  });
+});

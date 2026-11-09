@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import { AlertTriangle, PenTool, X } from "lucide-react";
+import { InstagramIcon } from "./InstagramIcon";
 import { useEffect, useRef, useState } from "react";
+import { OBERDAN_INSTAGRAM } from "@/config/charges";
 import { CHARGES_COPY } from "@/config/rankings";
 import { absoluteUrl } from "@/config/site";
 import { shareLink } from "@/lib/client/share";
@@ -13,7 +15,8 @@ export function ChargeGallery({ charges, error, notify }: { charges: Charge[]; e
   const [openId, setOpenId] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLElement | null>(null);
-  const open = charges.find((c) => c.id === openId) ?? null;
+  // Só charges em imagem abrem no visualizador; posts do Instagram têm o próprio embed.
+  const open = charges.find((c) => c.id === openId && c.imageUrl) ?? null;
 
   // <dialog> nativo: foco preso no modal e fechamento com Esc.
   useEffect(() => {
@@ -35,7 +38,7 @@ export function ChargeGallery({ charges, error, notify }: { charges: Charge[]; e
     const outcome = await shareLink({
       title: charge.title,
       text: `${charge.title} — charge de ${charge.credits} no Papo Reto Ranking`,
-      url: absoluteUrl(`/charges#charge-${charge.id}`),
+      url: charge.instagramUrl ?? absoluteUrl(`/charges#charge-${charge.id}`),
     });
     if (outcome === "copied") notify("Link da charge copiado!");
   };
@@ -49,11 +52,22 @@ export function ChargeGallery({ charges, error, notify }: { charges: Charge[]; e
         </h2>
         <p className="mt-1.5 text-lg font-bold leading-snug text-yellow">{CHARGES_COPY.subtitle}</p>
         <p className="mt-1.5 max-w-2xl text-[15px] leading-snug text-muted">{CHARGES_COPY.description}</p>
-        {charges.length > 0 ? (
-          <a href="#charges-grid" className="mt-3 inline-flex min-h-11 items-center rounded-xl bg-yellow px-5 font-extrabold uppercase text-ink">
-            {CHARGES_COPY.cta}
+        <div className="mt-3 flex flex-wrap gap-2">
+          {charges.length > 0 ? (
+            <a href="#charges-grid" className="inline-flex min-h-11 items-center rounded-xl bg-yellow px-5 font-extrabold uppercase text-ink">
+              {CHARGES_COPY.cta}
+            </a>
+          ) : null}
+          <a
+            href={OBERDAN_INSTAGRAM.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-line bg-surface px-4 font-extrabold text-white transition-colors hover:border-yellow"
+          >
+            <InstagramIcon className="size-5" /> @{OBERDAN_INSTAGRAM.handle}
+            <span className="sr-only"> no Instagram (abre em nova aba)</span>
           </a>
-        ) : null}
+        </div>
       </header>
 
       {error ? (
@@ -67,8 +81,17 @@ export function ChargeGallery({ charges, error, notify }: { charges: Charge[]; e
           <PenTool aria-hidden className="mx-auto size-9 text-yellow" />
           <p className="mt-2 font-display text-2xl uppercase">O Oberdan está afiando o lápis</p>
           <p className="mx-auto mt-1 max-w-sm text-sm text-muted">
-            As charges aparecem aqui assim que forem publicadas. Volte depois do próximo programa.
+            As charges aparecem aqui assim que forem publicadas. Enquanto isso, confira no Instagram do Oberdan.
           </p>
+          <a
+            href={OBERDAN_INSTAGRAM.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-yellow px-5 font-extrabold uppercase text-ink"
+          >
+            <InstagramIcon className="size-5" /> Ver charges no Instagram
+            <span className="sr-only"> (abre em nova aba)</span>
+          </a>
         </div>
       ) : (
         <ul id="charges-grid" className="grid scroll-mt-20 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -105,7 +128,7 @@ export function ChargeGallery({ charges, error, notify }: { charges: Charge[]; e
               </button>
             </div>
             <div className="relative h-[70dvh] w-full bg-bg">
-              <Image src={open.imageUrl} alt={open.description || open.title} fill sizes="100vw" className="object-contain" />
+              <Image src={open.imageUrl!} alt={open.description || open.title} fill sizes="100vw" className="object-contain" />
             </div>
             {open.description ? <p className="p-3 text-[15px]">{open.description}</p> : null}
           </figure>

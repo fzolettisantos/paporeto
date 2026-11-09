@@ -119,6 +119,14 @@ create table if not exists public.charges (
 );
 create index if not exists charges_published_idx on public.charges (published, published_on desc);
 
+-- Charges podem ser imagem enviada pelo painel ou post do Instagram (embed oficial).
+alter table public.charges alter column image_url drop not null;
+alter table public.charges add column if not exists instagram_url text unique
+  check (instagram_url ~ '^https://www\.instagram\.com/(p|reel)/[A-Za-z0-9_-]+/$');
+do $$ begin
+  alter table public.charges add constraint charges_image_or_instagram check (image_url is not null or instagram_url is not null);
+exception when duplicate_object then null; end $$;
+
 -- ---------------------------------------------------------------------
 -- Placar: mantido por trigger
 -- ---------------------------------------------------------------------

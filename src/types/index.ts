@@ -111,7 +111,10 @@ export interface RankingResults {
 export interface Charge {
   id: string;
   title: string;
-  imageUrl: string;
+  /** Imagem enviada pelo painel. Nulo quando a charge é um post do Instagram. */
+  imageUrl: string | null;
+  /** Permalink do post no Instagram (exibido com o embed oficial). */
+  instagramUrl: string | null;
   description: string | null;
   credits: string;
   publishedOn: string;

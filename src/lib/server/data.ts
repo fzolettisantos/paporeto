@@ -1,5 +1,6 @@
 import "server-only";
 import { BALA_SHOTS, BALA_UPDATED_AT } from "@/config/bala-do-veio";
+import { INSTAGRAM_CHARGES, parseInstagramPostUrl } from "@/config/charges";
 import { DEMO_PARTICIPANTS } from "@/config/demo";
 import { RANKINGS } from "@/config/rankings";
 import { getViewPeriod, getVotingPeriod, isPeriodKind } from "@/lib/period";
@@ -239,7 +240,8 @@ export async function getRankingResults(
 interface ChargeRow {
   id: string;
   title: string;
-  image_url: string;
+  image_url: string | null;
+  instagram_url: string | null;
   description: string | null;
   credits: string;
   published_on: string;
@@ -249,22 +251,39 @@ interface ChargeRow {
 
 /** Charges publicadas. No modo demonstração não há charges (nada de imagens aleatórias). */
 export async function getPublishedCharges(): Promise<Charge[]> {
-  if (!isSupabaseConfigured()) return [];
+  // Posts do Instagram listados no código (aparecem com ou sem Supabase).
+  const fromConfig: Charge[] = INSTAGRAM_CHARGES.flatMap((post, index) => {
+    const url = parseInstagramPostUrl(post.url);
+    if (!url) return [];
+    return [{
+      id: `ig-${index}-${url.split("/").at(-2)}`,
+      title: post.title ?? "Charge do Oberdan",
+      imageUrl: null,
+      instagramUrl: url,
+      description: null,
+      credits: "Oberdan",
+      publishedOn: post.publishedOn ?? "",
+    }];
+  });
+  if (!isSupabaseConfigured()) return fromConfig;
   const { data, error } = await getServiceClient()
     .from("charges")
-    .select("id, title, image_url, description, credits, published_on, width, height")
+    .select("id, title, image_url, instagram_url, description, credits, published_on, width, height")
     .eq("published", true)
     .order("published_on", { ascending: false })
     .limit(60);
   if (error) throw new Error(`Erro ao carregar charges: ${error.message}`);
-  return ((data ?? []) as ChargeRow[]).map((row) => ({
+  const fromDb: Charge[] = ((data ?? []) as ChargeRow[]).map((row) => ({
     id: row.id,
     title: row.title,
     imageUrl: row.image_url,
+    instagramUrl: row.instagram_url,
     description: row.description,
     credits: row.credits,
     publishedOn: row.published_on,
     width: row.width,
     height: row.height,
   }));
+  const seen = new Set(fromDb.map((c) => c.instagramUrl).filter(Boolean));
+  return [...fromDb, ...fromConfig.filter((c) => !seen.has(c.instagramUrl))];
 }

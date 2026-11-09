@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { parseInstagramPostUrl } from "@/config/charges";
 import { withBase } from "@/config/site";
 import { isPeriodKind } from "@/lib/period";
 import { isRankingSlug, SLUG_PATTERN } from "@/lib/validation";
@@ -211,6 +212,24 @@ export async function createCharge(form: FormData) {
   });
   if (error) done(`Erro ao salvar charge: ${error.message}`, true);
   done("Charge cadastrada.");
+}
+
+/** Charge vinda de um post do Instagram (embed oficial, sem copiar a imagem). */
+export async function createInstagramCharge(form: FormData) {
+  await requireAdmin();
+  const url = parseInstagramPostUrl(text(form, "instagram_url", 300));
+  if (!url) done("Link inválido. Use o link de um post do Instagram (instagram.com/p/… ou /reel/…).", true);
+  const date = text(form, "published_on", 10) || new Date().toISOString().slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) done("Data inválida.", true);
+  const { error } = await getServiceClient().from("charges").insert({
+    title: text(form, "title", 120) || "Charge do Oberdan",
+    instagram_url: url,
+    credits: "Oberdan",
+    published_on: date,
+    published: form.get("published") === "on",
+  });
+  if (error) done(error.code === "23505" ? "Esse post já está na galeria." : `Erro ao salvar: ${error.message}`, true);
+  done("Post do Instagram adicionado.");
 }
 
 export async function setChargePublished(form: FormData) {

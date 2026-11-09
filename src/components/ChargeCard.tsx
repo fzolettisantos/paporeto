@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Maximize2, Share2 } from "lucide-react";
 import type { Charge } from "@/types";
+import { InstagramEmbed } from "./InstagramEmbed";
 
 export function formatChargeDate(date: string) {
   const parsed = new Date(`${date}T12:00:00Z`);
@@ -12,11 +13,30 @@ export function formatChargeDate(date: string) {
 }
 
 export function ChargeCard({ charge, eager, onOpen, onShare }: { charge: Charge; eager?: boolean; onOpen: () => void; onShare: () => void }) {
+  // Post do Instagram: o embed oficial já traz imagem, legenda, crédito e link do autor.
+  if (charge.instagramUrl) {
+    return (
+      <li id={`charge-${charge.id}`} className="list-none">
+        <div className="flex justify-center">
+          <InstagramEmbed url={charge.instagramUrl} title={charge.title} />
+        </div>
+        <button
+          type="button"
+          onClick={onShare}
+          className="mt-2 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-line bg-surface-2 text-sm font-extrabold uppercase"
+        >
+          <Share2 aria-hidden className="size-4" /> Compartilhar
+        </button>
+      </li>
+    );
+  }
+  if (!charge.imageUrl) return null;
+  const imageUrl = charge.imageUrl;
   return (
     <li id={`charge-${charge.id}`} className="list-none overflow-hidden rounded-2xl border border-line bg-surface">
       <button type="button" onClick={onOpen} className="group relative block aspect-[4/3] w-full bg-surface-2" aria-label={`Ampliar charge: ${charge.title}`}>
         <Image
-          src={charge.imageUrl}
+          src={imageUrl}
           alt=""
           fill
           sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"

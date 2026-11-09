@@ -221,6 +221,20 @@ publicação (sem erro).
 No servidor, os arquivos ficam em `/opt/paporeto` (`app/` com o código, `docker-compose.yml`, `Caddyfile` e `.env`).
 O rate limit em memória vale por instância; o limite que manda de verdade é o do banco.
 
+## Charges do Oberdan (Instagram)
+
+A galeria mostra os posts do Instagram do Oberdan ([@oberdan_machado](https://www.instagram.com/oberdan_machado/))
+com o **embed oficial** do Instagram: a imagem, a legenda, o crédito e o link do autor aparecem como no Instagram,
+sem copiar a imagem para o site. Há também um botão para o perfil dele.
+
+- **Pelo painel** (`/admin` → Charges → "Adicionar post do Instagram"): no Instagram, abra o post, use
+  "Copiar link" e cole. Aceita posts e reels.
+- **Pelo código** (funciona mesmo sem Supabase): adicione o link em `INSTAGRAM_CHARGES`
+  (`src/config/charges.ts`).
+- Também dá para enviar charges em imagem pelo painel, como antes.
+
+Mostrar o perfil inteiro sozinho exigiria que o Oberdan autorizasse o site na conta dele (API oficial da Meta).
+
 ## Compartilhamento
 
 - URLs por aba: `/falou-merda`, `/sabio`, `/bala-do-veio`, `/charges` (abrem a mesma experiência já na aba).

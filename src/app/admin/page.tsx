@@ -6,7 +6,7 @@ import { isSupabaseConfigured } from "@/lib/server/env";
 import { getServiceClient } from "@/lib/server/supabase";
 import { EXPRESSION_STATES, inRanking, RANKING_SLUGS, type RankingSlug } from "@/types";
 import {
-  createCharge, createParticipant, deleteCharge, logout, removeCaricature,
+  createCharge, createInstagramCharge, createParticipant, deleteCharge, logout, removeCaricature,
   addShot, deleteShot, setChargePublished, updateParticipant, updateRanking, uploadCaricature,
 } from "./actions";
 
@@ -35,7 +35,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const [participantsRes, rankingsRes, chargesRes, results] = await Promise.all([
     sb.from("participants").select("id, slug, name, nickname, sort_order, avatar_paths, active, rankings").order("sort_order"),
     sb.from("rankings").select("id, slug, status, period_kind, week_starts_on, mode"),
-    sb.from("charges").select("id, title, published, published_on, credits").order("published_on", { ascending: false }),
+    sb.from("charges").select("id, title, published, published_on, credits, instagram_url").order("published_on", { ascending: false }),
     Promise.all((["week", "month", "season"] as const).map((view) => getRankingResults(undefined, { view }))).then((all) => all.flat()),
   ]);
   const { data: shotRows } = await sb
@@ -223,7 +223,19 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
 
       <section aria-labelledby="h-charges">
         <h2 id="h-charges" className="font-display text-2xl uppercase">Charges</h2>
+        <form action={createInstagramCharge} className={`${card} mt-3 grid gap-2 sm:grid-cols-2`}>
+          <p className="font-bold sm:col-span-2">Adicionar post do Instagram</p>
+          <p className="text-sm text-muted sm:col-span-2">
+            No Instagram, abra o post e use “Copiar link”. Aparece no site com o embed oficial (crédito e link do Oberdan).
+          </p>
+          <input name="instagram_url" type="url" required placeholder="https://www.instagram.com/p/…" className={`${input} sm:col-span-2`} aria-label="Link do post" />
+          <input name="title" placeholder="Título (opcional)" className={input} aria-label="Título" />
+          <input name="published_on" type="date" className={input} aria-label="Data (opcional)" />
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="published" defaultChecked className="size-5" /> Publicar agora</label>
+          <button className={button}>Adicionar post</button>
+        </form>
         <form action={createCharge} className={`${card} mt-3 grid gap-2 sm:grid-cols-2`}>
+          <p className="font-bold sm:col-span-2">Ou enviar uma imagem</p>
           <input name="title" placeholder="Título" required className={input} aria-label="Título" />
           <input name="published_on" type="date" required className={input} aria-label="Data" />
           <input name="credits" placeholder="Créditos (padrão: Oberdan)" className={input} aria-label="Créditos" />
@@ -235,7 +247,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         <ul className="mt-3 space-y-2">
           {charges.map((c) => (
             <li key={c.id} className={`${card} flex flex-wrap items-center justify-between gap-2`}>
-              <span><strong>{c.title}</strong> <span className="text-sm text-muted">{c.published_on} · {c.credits} · {c.published ? "publicada" : "rascunho"}</span></span>
+              <span><strong>{c.title}</strong> <span className="text-sm text-muted">{c.published_on} · {c.credits} · {c.instagram_url ? "Instagram · " : ""}{c.published ? "publicada" : "rascunho"}</span></span>
               <span className="flex gap-2">
                 <form action={setChargePublished}>
                   <input type="hidden" name="id" value={c.id} />
