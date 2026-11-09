@@ -77,7 +77,8 @@ descrevendo a expressão e `aria-label` em cada card.
 seguem as mesmas regras de posição. A aba não mostra votos, porcentagem nem botão de votar, e o voto é recusado na
 API (`not_votable`) e no banco (`rankings.mode = 'static'`).
 
-**Tiros do Véio.** Cada box mostra uma tabela com **quantidade · local do tiro · localidade · tipo de arma** e o
+**Tiros do Véio.** Cada box mostra uma tabela com **quantidade · local do tiro (onde acerta no corpo) · localidade
+(onde o Véio vai dar os tiros) · tipo de arma · evidência (episódio e tempo, ex.: "EP 629 · 1:08:12")** e o
 total de tiros da pessoa; o motivo aparece numa linha abaixo do registro, e colunas sem nenhum dado no box ficam
 escondidas. Acima de todos os boxes aparece o total geral. Só a quantidade é obrigatória.
 

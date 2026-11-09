@@ -69,12 +69,16 @@ export interface VotingPeriod {
 export interface BalaShot {
   id: string;
   quantity: number;
-  /** Local do tiro (ex.: "Na testa"). Opcional. */
+  /** Local do tiro: onde os tiros acertam no corpo (ex.: "Na testa"). Opcional. */
   location: string | null;
   /** Tipo de arma (ex.: "Berinjela"). Opcional. */
   weapon: string | null;
-  /** Localidade onde aconteceu (ex.: "Episódio 360"). Opcional. */
+  /** Localidade: lugar onde o Véio vai dar os tiros (ex.: "No estúdio"). Opcional. */
   place: string | null;
+  /** Evidência: número do episódio em que aconteceu (ex.: 629). Opcional. */
+  episode: number | null;
+  /** Evidência: tempo no episódio (ex.: "1:08:12"). Opcional. */
+  episodeTime: string | null;
   /** Motivo ou observação (ex.: "Porque falou da Dona Bila"). Opcional. */
   note: string | null;
 }

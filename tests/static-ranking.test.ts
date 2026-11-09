@@ -6,7 +6,7 @@ import { getRankingResults } from "@/lib/server/data";
 import { castVote } from "@/lib/server/vote";
 import type { RankingResults } from "@/types";
 import { participant } from "./helpers";
-import { shotsLabel, shotsTotal } from "@/components/ShotsTable";
+import { formatEvidence, shotsLabel, shotsTotal } from "@/components/ShotsTable";
 
 const ranked = (positions: Record<string, number>) =>
   rankStatic(Object.entries(positions).map(([slug, position], i) => ({ participant: participant(slug, i), position })));
@@ -33,6 +33,9 @@ describe("Bala do Véio é estático", () => {
     expect(shotsTotal(shots.kleber!)).toBe(12);
     expect(results!.totalShots).toBe(48);
     expect(shotsLabel(1)).toBe("1 tiro");
+    expect(formatEvidence(shots["veio-tricolor"]![0]!)).toBe("EP 629 · 1:08:12");
+    expect(formatEvidence(shots.nem![0]!)).toBe("EP 360");
+    expect(formatEvidence(shots.serdan![0]!)).toBeNull();
     expect(shotsLabel(1234)).toBe("1.234 tiros");
   });
 

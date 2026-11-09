@@ -15,8 +15,17 @@ const shot = (
   id: string,
   quantity: number,
   location: string | null,
-  extra: { place?: string; weapon?: string; note?: string } = {},
-): BalaShot => ({ id, quantity, location, place: extra.place ?? null, weapon: extra.weapon ?? null, note: extra.note ?? null });
+  extra: { place?: string; weapon?: string; note?: string; episode?: number; time?: string } = {},
+): BalaShot => ({
+  id,
+  quantity,
+  location,
+  place: extra.place ?? null,
+  weapon: extra.weapon ?? null,
+  note: extra.note ?? null,
+  episode: extra.episode ?? null,
+  episodeTime: extra.time ?? null,
+});
 
 export const BALA_SHOTS: Record<string, BalaShot[]> = {
   serdan: [shot("serdan-1", 12, "Na testa")],
@@ -24,7 +33,7 @@ export const BALA_SHOTS: Record<string, BalaShot[]> = {
   carabina: [shot("carabina-1", 1, "Na cara")],
   oberdan: [shot("oberdan-1", 1, "Local não pré-definido")],
   mano: [shot("mano-1", 1, "Na cara", { note: "Porque falou da Dona Bila" })],
-  "lucas-samuel": [shot("lucas-samuel-1", 1, null, { place: "Chat" })],
+  "lucas-samuel": [shot("lucas-samuel-1", 1, null)],
   dentinho: [shot("dentinho-1", 1, null)],
   "luiz-gusttavo": [shot("luiz-gusttavo-1", 1, "Na testa")],
   mastigasamba: [shot("mastigasamba-1", 1, null, { note: "“Foda-se o Mastigasamba”" })],
@@ -34,7 +43,7 @@ export const BALA_SHOTS: Record<string, BalaShot[]> = {
     }),
   ],
   kleber: [shot("kleber-1", 10, null), shot("kleber-2", 2, "Na perna", { note: "Última atualização (09/11)" })],
-  nem: [shot("nem-1", 1, "Na boca", { place: "Episódio 360" })],
+  nem: [shot("nem-1", 1, "Na boca", { episode: 360 })],
   "douglas-dias": [
     shot("douglas-dias-1", 7, null, {
       note: "Pediu pra um grafiteiro fazer o escudo do Palmeiras no muro da casa do Véio",
@@ -42,7 +51,8 @@ export const BALA_SHOTS: Record<string, BalaShot[]> = {
   ],
   "veio-tricolor": [
     shot("veio-tricolor-1", 1, "Na cabeça (nele mesmo)", {
-      place: "EP 629, aos 1:08:12",
+      episode: 629,
+      time: "1:08:12",
       note: "“Se eu apanhar de um gordinho desse (Carabina) eu dou um tiro na minha cabeça”",
     }),
   ],

@@ -69,6 +69,8 @@ create table if not exists public.static_shots (
 -- Localidade onde aconteceu (opcional), ex.: "Episódio 360". Local e arma também são opcionais.
 alter table public.static_shots add column if not exists place text check (length(place) <= 60);
 alter table public.static_shots add column if not exists note text check (length(note) <= 200);
+alter table public.static_shots add column if not exists episode integer check (episode between 1 and 99999);
+alter table public.static_shots add column if not exists episode_time text check (episode_time ~ '^\d{1,2}(:\d{2}){1,2}$');
 alter table public.static_shots alter column location drop not null;
 alter table public.static_shots alter column weapon drop not null;
 create index if not exists static_shots_ranking_idx on public.static_shots (ranking_id, participant_id);
@@ -304,25 +306,25 @@ declare v_ranking uuid;
 begin
   select id into v_ranking from public.rankings where slug = 'bala-do-veio';
   if v_ranking is null or exists (select 1 from public.static_shots where ranking_id = v_ranking) then return; end if;
-  insert into public.static_shots (ranking_id, participant_id, quantity, location, place, note, created_at)
-  select v_ranking, p.id, d.quantity, d.location, d.place, d.note, now() + make_interval(secs => d.n)
+  insert into public.static_shots (ranking_id, participant_id, quantity, location, place, note, episode, episode_time, created_at)
+  select v_ranking, p.id, d.quantity, d.location, d.place, d.note, d.episode, d.episode_time, now() + make_interval(secs => d.n)
   from (values
-    (1, 'serdan', 12, 'Na testa', null, null),
-    (2, 'gadu', 7, 'Local não pré-definido', null, null),
-    (3, 'carabina', 1, 'Na cara', null, null),
-    (4, 'oberdan', 1, 'Local não pré-definido', null, null),
-    (5, 'mano', 1, 'Na cara', null, 'Porque falou da Dona Bila'),
-    (6, 'lucas-samuel', 1, null, 'Chat', null),
-    (7, 'dentinho', 1, null, null, null),
-    (8, 'luiz-gusttavo', 1, 'Na testa', null, null),
-    (9, 'mastigasamba', 1, null, null, '“Foda-se o Mastigasamba”'),
-    (10, 'bruno-di-santi', 1, null, null, 'Ameaça feita nas entrelinhas + combo de deixar ele amarrado numa árvore 3 dias'),
-    (11, 'kleber', 10, null, null, null),
-    (12, 'kleber', 2, 'Na perna', null, 'Última atualização (09/11)'),
-    (13, 'nem', 1, 'Na boca', 'Episódio 360', null),
-    (14, 'douglas-dias', 7, null, null, 'Pediu pra um grafiteiro fazer o escudo do Palmeiras no muro da casa do Véio'),
-    (15, 'veio-tricolor', 1, 'Na cabeça (nele mesmo)', 'EP 629, aos 1:08:12',
-      '“Se eu apanhar de um gordinho desse (Carabina) eu dou um tiro na minha cabeça”')
-  ) as d(n, slug, quantity, location, place, note)
+    (1, 'serdan', 12, 'Na testa', null, null, null::int, null),
+    (2, 'gadu', 7, 'Local não pré-definido', null, null, null, null),
+    (3, 'carabina', 1, 'Na cara', null, null, null, null),
+    (4, 'oberdan', 1, 'Local não pré-definido', null, null, null, null),
+    (5, 'mano', 1, 'Na cara', null, 'Porque falou da Dona Bila', null, null),
+    (6, 'lucas-samuel', 1, null, null, null, null, null),
+    (7, 'dentinho', 1, null, null, null, null, null),
+    (8, 'luiz-gusttavo', 1, 'Na testa', null, null, null, null),
+    (9, 'mastigasamba', 1, null, null, '“Foda-se o Mastigasamba”', null, null),
+    (10, 'bruno-di-santi', 1, null, null, 'Ameaça feita nas entrelinhas + combo de deixar ele amarrado numa árvore 3 dias', null, null),
+    (11, 'kleber', 10, null, null, null, null, null),
+    (12, 'kleber', 2, 'Na perna', null, 'Última atualização (09/11)', null, null),
+    (13, 'nem', 1, 'Na boca', null, null, 360, null),
+    (14, 'douglas-dias', 7, null, null, 'Pediu pra um grafiteiro fazer o escudo do Palmeiras no muro da casa do Véio', null, null),
+    (15, 'veio-tricolor', 1, 'Na cabeça (nele mesmo)', null,
+      '“Se eu apanhar de um gordinho desse (Carabina) eu dou um tiro na minha cabeça”', 629, '1:08:12')
+  ) as d(n, slug, quantity, location, place, note, episode, episode_time)
   join public.participants p on p.slug = d.slug;
 end $$;

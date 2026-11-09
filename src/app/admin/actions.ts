@@ -168,12 +168,17 @@ export async function addShot(form: FormData) {
   const weapon = text(form, "weapon", 60) || null;
   const place = text(form, "place", 60) || null;
   const note = text(form, "note", 200) || null;
+  const episodeRaw = text(form, "episode", 5);
+  const episode = episodeRaw ? Number(episodeRaw) : null;
+  const episodeTime = text(form, "episode_time", 8) || null;
+  if (episode !== null && (!Number.isInteger(episode) || episode < 1 || episode > 99999)) done("Número do episódio inválido.", true);
+  if (episodeTime && !/^\d{1,2}(:\d{2}){1,2}$/.test(episodeTime)) done("Tempo da evidência no formato 1:08:12 ou 08:12.", true);
   if (!UUID.test(participantId)) done("Participante inválido.", true);
   if (!Number.isInteger(quantity) || quantity < 1 || quantity > 9999) done("Quantidade de tiros: número de 1 a 9999.", true);
   const sb = getServiceClient();
   const { data: ranking } = await sb.from("rankings").select("mode").eq("id", rankingId).single();
   if (ranking?.mode !== "static") done("Esse ranking não tem tiros.", true);
-  const { error } = await sb.from("static_shots").insert({ ranking_id: rankingId, participant_id: participantId, quantity, location, place, weapon, note });
+  const { error } = await sb.from("static_shots").insert({ ranking_id: rankingId, participant_id: participantId, quantity, location, place, weapon, note, episode, episode_time: episodeTime });
   if (error) done(`Erro ao salvar tiros: ${error.message}`, true);
   done("Tiros registrados.");
 }

@@ -40,7 +40,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   ]);
   const { data: shotRows } = await sb
     .from("static_shots")
-    .select("id, ranking_id, participant_id, quantity, location, place, weapon, note")
+    .select("id, ranking_id, participant_id, quantity, location, place, weapon, note, episode, episode_time")
     .order("created_at");
   const shots = shotRows ?? [];
   const staticRankings = (rankingsRes.data ?? []).filter((r) => r.mode === "static");
@@ -89,7 +89,8 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           </h2>
           <p className="mt-2 text-sm text-muted">Sem votação do público. A ordem segue o total de tiros de cada um (iguais empatam).</p>
 
-          <h3 className="mt-5 font-bold">Tiros (quantidade obrigatória; local, localidade, arma e motivo opcionais)</h3>
+          <h3 className="mt-5 font-bold">Tiros</h3>
+          <p className="text-sm text-muted">Quantidade obrigatória. Local do tiro = onde acerta no corpo; localidade = onde o Véio vai dar os tiros; evidência = episódio e tempo.</p>
           <div className="mt-2 space-y-3">
             {participants.filter((p) => p.active && inRanking(p, ranking.slug as RankingSlug)).map((p) => {
               const mine = shots.filter((s) => s.ranking_id === ranking.id && s.participant_id === p.id);
@@ -100,7 +101,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                   <ul className="mt-2 space-y-1 text-sm">
                     {mine.map((s) => (
                       <li key={s.id} className="flex items-center justify-between gap-2">
-                        <span><strong className="tabular">{s.quantity}</strong> · {s.location || "—"} · {s.place || "—"} · {s.weapon || "—"}{s.note ? ` · ${s.note}` : ""}</span>
+                        <span><strong className="tabular">{s.quantity}</strong> · {s.location || "—"} · {s.place || "—"} · {s.weapon || "—"}{s.episode ? ` · EP ${s.episode}` : ""}{s.episode_time ? ` ${s.episode_time}` : ""}{s.note ? ` · ${s.note}` : ""}</span>
                         <form action={deleteShot}>
                           <input type="hidden" name="id" value={s.id} />
                           <button className="text-red underline">remover</button>
@@ -112,10 +113,12 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                     <input type="hidden" name="id" value={ranking.id} />
                     <input type="hidden" name="participant_id" value={p.id} />
                     <input name="quantity" type="number" min={1} max={9999} required placeholder="Tiros" className={input} aria-label={`Quantidade de tiros em ${p.name}`} />
-                    <input name="location" maxLength={60} placeholder="Local do tiro (opcional)" className={input} aria-label={`Local do tiro em ${p.name}`} />
-                    <input name="place" maxLength={60} placeholder="Localidade (opcional)" className={input} aria-label={`Localidade dos tiros em ${p.name}`} />
+                    <input name="location" maxLength={60} placeholder="Local do tiro, no corpo (opcional)" className={input} aria-label={`Local do tiro em ${p.name}`} />
+                    <input name="place" maxLength={60} placeholder="Localidade, onde vai dar os tiros (opcional)" className={input} aria-label={`Localidade dos tiros em ${p.name}`} />
                     <input name="weapon" maxLength={60} placeholder="Tipo de arma (opcional)" className={input} aria-label={`Tipo de arma em ${p.name}`} />
-                    <input name="note" maxLength={200} placeholder="Motivo / observação (opcional)" className={`${input} sm:col-span-3`} aria-label={`Motivo dos tiros em ${p.name}`} />
+                    <input name="episode" type="number" min={1} max={99999} placeholder="Episódio (ex.: 629)" className={input} aria-label={`Episódio da evidência em ${p.name}`} />
+                    <input name="episode_time" maxLength={8} pattern="\\d{1,2}(:\\d{2}){1,2}" placeholder="Tempo (ex.: 1:08:12)" className={input} aria-label={`Tempo da evidência em ${p.name}`} />
+                    <input name="note" maxLength={200} placeholder="Motivo / observação (opcional)" className={`${input} sm:col-span-2`} aria-label={`Motivo dos tiros em ${p.name}`} />
                     <button className={button}>Adicionar</button>
                   </form>
                 </div>
