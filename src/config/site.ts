@@ -16,6 +16,13 @@ export function withBase(path = "/") {
   return `${BASE_PATH}${clean}`;
 }
 
+/**
+ * Votação liberada? Só com NEXT_PUBLIC_VOTING_OPEN=true. Fechada, o botão de voto mostra
+ * VOTING_SOON_MESSAGE sem chamar o servidor.
+ */
+export const VOTING_OPEN = process.env.NEXT_PUBLIC_VOTING_OPEN === "true";
+export const VOTING_SOON_MESSAGE = "Segura a corneta! 😂 Logo, logo você vai poder votar!";
+
 export const site = {
   name: "Papo Reto Ranking",
   url: resolveSiteUrl(),

@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 import { CHARGES_COPY, RANKINGS, tabCopy } from "@/config/rankings";
 import { isRankingSlug } from "@/lib/validation";
 import { PersonagensGallery } from "./PersonagensGallery";
-import { site, withBase } from "@/config/site";
+import { site, VOTING_OPEN, VOTING_SOON_MESSAGE, withBase } from "@/config/site";
 import { shareCardImage } from "@/lib/client/share";
 import { hasResult, participantHeadline, rankingShareText } from "@/lib/share";
 import { VIEW_PARAM, parseViewParam } from "@/lib/period";
@@ -97,6 +97,11 @@ export function HomeExperience({
   }, [tab]);
 
   const vote = async (slug: RankingSlug, participantId: string): Promise<boolean> => {
+    // Votação ainda não liberada: só avisa, sem chamar o servidor.
+    if (!VOTING_OPEN) {
+      notify(VOTING_SOON_MESSAGE);
+      return false;
+    }
     setPendingVote(participantId);
     try {
       const response = await fetch(withBase("/api/vote"), {
@@ -111,7 +116,8 @@ export function HomeExperience({
         notify(`Voto registrado${name ? ` em ${name}` : ""}! Agora manda pro grupo. 📣`);
         return true;
       }
-      notify(data.message ?? "Não foi possível registrar o voto agora.");
+      // Falha do servidor (ex.: configuração incompleta): mensagem amigável no lugar do erro técnico.
+      notify(data.status === "error" || !data.status ? VOTING_SOON_MESSAGE : (data.message ?? VOTING_SOON_MESSAGE));
       return false;
     } catch {
       notify("Sem conexão. Confira a internet e tente de novo.");

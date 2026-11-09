@@ -143,6 +143,12 @@ placar. Para não tirar o botão de baixo do dedo de ninguém, a **ordem** dos c
 em ciclos de 8 s com a pessoa sem interagir, ou ao tocar em "atualizar posições". Animações respeitam
 `prefers-reduced-motion`.
 
+## Liberar a votação
+
+Enquanto `NEXT_PUBLIC_VOTING_OPEN` não for `true`, os botões de voto mostram
+"Segura a corneta! 😂 Logo, logo você vai poder votar!" e nada é enviado ao servidor. Com o Supabase e as
+variáveis de voto configurados, cadastre `NEXT_PUBLIC_VOTING_OPEN=true` (tipo Config, na Vercel) e faça um Redeploy.
+
 ## Configurando o Supabase
 
 1. Crie um projeto em [supabase.com](https://supabase.com).
