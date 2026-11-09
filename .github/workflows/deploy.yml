@@ -1,0 +1,88 @@
+# Testa a cada mudança e, na main, publica no VPS (se os Secrets estiverem configurados).
+name: Testar e publicar
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build
+
+  deploy:
+    needs: check
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      VPS_HOST: ${{ secrets.VPS_HOST }}
+      VPS_USER: ${{ secrets.VPS_USER }}
+    steps:
+      - name: Secrets do VPS configurados?
+        id: ready
+        run: |
+          if [ -z "$VPS_HOST" ]; then
+            echo "VPS ainda não configurado (faltam os Secrets VPS_HOST, VPS_USER e VPS_SSH_KEY). Publicação pulada."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.ready.outputs.ok == 'true'
+
+      - name: Chave SSH
+        if: steps.ready.outputs.ok == 'true'
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts
+
+      - name: Enviar arquivos e configuração
+        if: steps.ready.outputs.ok == 'true'
+        env:
+          APP_ENV: ${{ secrets.APP_ENV }}
+        run: |
+          SSH="ssh -i ~/.ssh/deploy_key"
+          rsync -az --delete -e "$SSH" \
+            --exclude .git --exclude node_modules --exclude .next \
+            ./ "$VPS_USER@$VPS_HOST:/opt/paporeto/app/"
+          rsync -az -e "$SSH" deploy/docker-compose.yml deploy/Caddyfile "$VPS_USER@$VPS_HOST:/opt/paporeto/"
+          printf '%s\n' "$APP_ENV" | $SSH "$VPS_USER@$VPS_HOST" 'umask 077 && cat > /opt/paporeto/.env'
+
+      - name: Publicar
+        if: steps.ready.outputs.ok == 'true'
+        run: |
+          ssh -i ~/.ssh/deploy_key "$VPS_USER@$VPS_HOST" '
+            set -e
+            cd /opt/paporeto
+            docker compose up -d --build --remove-orphans
+            docker image prune -f
+          '
+
+      - name: Conferir o site
+        if: steps.ready.outputs.ok == 'true'
+        run: |
+          ssh -i ~/.ssh/deploy_key "$VPS_USER@$VPS_HOST" '
+            cd /opt/paporeto
+            for i in $(seq 1 30); do
+              if docker compose exec -T app wget -qO- http://127.0.0.1:3000/robots.txt >/dev/null 2>&1; then echo "Site respondendo."; exit 0; fi
+              sleep 5
+            done
+            echo "O site não respondeu depois da publicação."; docker compose logs --tail=50 app; exit 1
+          '

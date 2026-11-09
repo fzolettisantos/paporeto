@@ -1,0 +1,93 @@
+/* Papo Reto Ranking — tema único (escuro), como um placar de estádio. */
+@import "tailwindcss";
+
+/* Paleta do briefing + derivados. Tema único (escuro), como um placar de estádio. */
+@theme {
+  --color-bg: #111318;
+  --color-surface: #1d222b;
+  --color-surface-2: #262c37;
+  --color-line: #343b48;
+  --color-ink: #111318;
+  --color-white: #ffffff;
+  --color-muted: #aab2c0;
+  --color-yellow: #ffd23f;
+  --color-red: #f04438;
+  --color-green: #32d583;
+
+  --font-display: var(--font-anton), Impact, "Arial Narrow", sans-serif;
+  --font-sans: var(--font-barlow), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --animate-flash: flash 1.6s ease-out 1;
+  @keyframes flash {
+    0% { box-shadow: 0 0 0 3px var(--color-yellow); }
+    100% { box-shadow: 0 0 0 3px transparent; }
+  }
+}
+
+:root {
+  color-scheme: dark;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  background: var(--color-bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  /* Sem fundo próprio: o fundo fica no <html>, para a arte lateral dos rankings (z negativo) aparecer. */
+  background: transparent;
+  color: var(--color-white);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100dvh;
+}
+
+/* Foco sempre visível para teclado. */
+:focus-visible {
+  outline: 3px solid var(--color-yellow);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Textura de arquibancada/papel jornal, bem sutil. */
+.bg-stands {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.06) 1px, transparent 0),
+    linear-gradient(180deg, rgb(255 210 63 / 0.08), transparent 70%);
+  background-size: 14px 14px, 100% 100%;
+}
+
+/* Faixa zebrada de "modo demonstração". */
+.demo-stripes {
+  background: repeating-linear-gradient(-45deg, #ffd23f 0 12px, #f2c21a 12px 24px);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+dialog::backdrop {
+  background: rgb(5 6 8 / 0.88);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "falou-merda": {
+    "src": "/rankings/falou-merda.webp",
+    "width": 800,
+    "height": 800
+  },
+  "sabio": {
+    "src": "/rankings/sabio.webp",
+    "width": 800,
+    "height": 800
+  },
+  "bala-do-veio": {
+    "src": "/rankings/bala-do-veio.webp",
+    "width": 960,
+    "height": 640
+  }
+}

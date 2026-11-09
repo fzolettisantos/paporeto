@@ -1,0 +1,31 @@
+# Roda no VPS em /opt/paporeto. Variáveis em /opt/paporeto/.env (escrito pela publicação automática).
+services:
+  app:
+    build:
+      context: ./app
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-}
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY:-}
+        NEXT_PUBLIC_YOUTUBE_URL: ${NEXT_PUBLIC_YOUTUBE_URL:-}
+        NEXT_PUBLIC_CARICATURE_CREDIT: ${NEXT_PUBLIC_CARICATURE_CREDIT:-}
+    env_file: .env
+    restart: unless-stopped
+    expose: ["3000"]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on: [app]
+    ports: ["80:80", "443:443", "443:443/udp"]
+    environment:
+      # Domínio do site (ex.: paporeto.com.br). Vazio = responde pelo IP, sem HTTPS.
+      SITE_DOMAIN: ${SITE_DOMAIN:-}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

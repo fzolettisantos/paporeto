@@ -1,0 +1,11 @@
+# Caddy: entrega o site e gera o certificado HTTPS (Let's Encrypt) sozinho para o domínio.
+# Com SITE_DOMAIN vazio, responde só pelo IP na porta 80 (útil para testar antes do DNS).
+{$SITE_DOMAIN::80} {
+	encode zstd gzip
+	reverse_proxy app:3000
+}
+
+# www → sem www (só quando há domínio).
+www.{$SITE_DOMAIN:localhost.invalid} {
+	redir https://{$SITE_DOMAIN}{uri} permanent
+}

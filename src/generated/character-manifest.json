@@ -1,0 +1,142 @@
+{
+  "benja": {
+    "falou-merda": {
+      "top": "/characters/benja/falou-merda/top.webp",
+      "middle": "/characters/benja/falou-merda/middle.webp",
+      "bottom": "/characters/benja/falou-merda/bottom.webp",
+      "neutral": "/characters/benja/falou-merda/neutral.webp"
+    },
+    "sabio": {
+      "top": "/characters/benja/sabio/top.webp",
+      "middle": "/characters/benja/sabio/middle.webp",
+      "bottom": "/characters/benja/sabio/bottom.webp",
+      "neutral": "/characters/benja/sabio/neutral.webp"
+    },
+    "bala-do-veio": {
+      "top": "/characters/benja/bala-do-veio/top.webp",
+      "middle": "/characters/benja/bala-do-veio/middle.webp",
+      "bottom": "/characters/benja/bala-do-veio/bottom.webp",
+      "neutral": "/characters/benja/bala-do-veio/neutral.webp"
+    }
+  },
+  "carabina": {
+    "falou-merda": {
+      "top": "/characters/carabina/falou-merda/top.webp",
+      "middle": "/characters/carabina/falou-merda/middle.webp",
+      "bottom": "/characters/carabina/falou-merda/bottom.webp",
+      "neutral": "/characters/carabina/falou-merda/neutral.webp"
+    },
+    "sabio": {
+      "top": "/characters/carabina/sabio/top.webp",
+      "middle": "/characters/carabina/sabio/middle.webp",
+      "bottom": "/characters/carabina/sabio/bottom.webp",
+      "neutral": "/characters/carabina/sabio/neutral.webp"
+    },
+    "bala-do-veio": {
+      "top": "/characters/carabina/bala-do-veio/top.webp",
+      "middle": "/characters/carabina/bala-do-veio/middle.webp",
+      "bottom": "/characters/carabina/bala-do-veio/bottom.webp",
+      "neutral": "/characters/carabina/bala-do-veio/neutral.webp"
+    }
+  },
+  "gadu": {
+    "falou-merda": {
+      "top": "/characters/gadu/falou-merda/top.webp",
+      "middle": "/characters/gadu/falou-merda/middle.webp",
+      "bottom": "/characters/gadu/falou-merda/bottom.webp",
+      "neutral": "/characters/gadu/falou-merda/neutral.webp"
+    },
+    "sabio": {
+      "top": "/characters/gadu/sabio/top.webp",
+      "middle": "/characters/gadu/sabio/middle.webp",
+      "bottom": "/characters/gadu/sabio/bottom.webp",
+      "neutral": "/characters/gadu/sabio/neutral.webp"
+    },
+    "bala-do-veio": {
+      "top": "/characters/gadu/bala-do-veio/top.webp",
+      "middle": "/characters/gadu/bala-do-veio/middle.webp",
+      "bottom": "/characters/gadu/bala-do-veio/bottom.webp",
+      "neutral": "/characters/gadu/bala-do-veio/neutral.webp"
+    }
+  },
+  "joneta": {
+    "falou-merda": {
+      "top": "/characters/joneta/falou-merda/top.webp",
+      "middle": "/characters/joneta/falou-merda/middle.webp",
+      "bottom": "/characters/joneta/falou-merda/bottom.webp",
+      "neutral": "/characters/joneta/falou-merda/neutral.webp"
+    },
+    "sabio": {
+      "top": "/characters/joneta/sabio/top.webp",
+      "middle": "/characters/joneta/sabio/middle.webp",
+      "bottom": "/characters/joneta/sabio/bottom.webp",
+      "neutral": "/characters/joneta/sabio/neutral.webp"
+    },
+    "bala-do-veio": {
+      "top": "/characters/joneta/bala-do-veio/top.webp",
+      "middle": "/characters/joneta/bala-do-veio/middle.webp",
+      "bottom": "/characters/joneta/bala-do-veio/bottom.webp",
+      "neutral": "/characters/joneta/bala-do-veio/neutral.webp"
+    }
+  },
+  "kleber": {
+    "falou-merda": {
+      "top": "/characters/kleber/falou-merda/top.webp",
+      "middle": "/characters/kleber/falou-merda/middle.webp",
+      "bottom": "/characters/kleber/falou-merda/bottom.webp",
+      "neutral": "/characters/kleber/falou-merda/neutral.webp"
+    },
+    "sabio": {
+      "top": "/characters/kleber/sabio/top.webp",
+      "middle": "/characters/kleber/sabio/middle.webp",
+      "bottom": "/characters/kleber/sabio/bottom.webp",
+      "neutral": "/characters/kleber/sabio/neutral.webp"
+    },
+    "bala-do-veio": {
+      "top": "/characters/kleber/bala-do-veio/top.webp",
+      "middle": "/characters/kleber/bala-do-veio/middle.webp",
+      "bottom": "/characters/kleber/bala-do-veio/bottom.webp",
+      "neutral": "/characters/kleber/bala-do-veio/neutral.webp"
+    }
+  },
+  "mano": {
+    "falou-merda": {
+      "top": "/characters/mano/falou-merda/top.webp",
+      "middle": "/characters/mano/falou-merda/middle.webp",
+      "bottom": "/characters/mano/falou-merda/bottom.webp",
+      "neutral": "/characters/mano/falou-merda/neutral.webp"
+    },
+    "sabio": {
+      "top": "/characters/mano/sabio/top.webp",
+      "middle": "/characters/mano/sabio/middle.webp",
+      "bottom": "/characters/mano/sabio/bottom.webp",
+      "neutral": "/characters/mano/sabio/neutral.webp"
+    },
+    "bala-do-veio": {
+      "top": "/characters/mano/bala-do-veio/top.webp",
+      "middle": "/characters/mano/bala-do-veio/middle.webp",
+      "bottom": "/characters/mano/bala-do-veio/bottom.webp",
+      "neutral": "/characters/mano/bala-do-veio/neutral.webp"
+    }
+  },
+  "veio-tricolor": {
+    "falou-merda": {
+      "top": "/characters/veio-tricolor/falou-merda/top.webp",
+      "middle": "/characters/veio-tricolor/falou-merda/middle.webp",
+      "bottom": "/characters/veio-tricolor/falou-merda/bottom.webp",
+      "neutral": "/characters/veio-tricolor/falou-merda/neutral.webp"
+    },
+    "sabio": {
+      "top": "/characters/veio-tricolor/sabio/top.webp",
+      "middle": "/characters/veio-tricolor/sabio/middle.webp",
+      "bottom": "/characters/veio-tricolor/sabio/bottom.webp",
+      "neutral": "/characters/veio-tricolor/sabio/neutral.webp"
+    },
+    "bala-do-veio": {
+      "top": "/characters/veio-tricolor/bala-do-veio/top.webp",
+      "middle": "/characters/veio-tricolor/bala-do-veio/middle.webp",
+      "bottom": "/characters/veio-tricolor/bala-do-veio/bottom.webp",
+      "neutral": "/characters/veio-tricolor/bala-do-veio/neutral.webp"
+    }
+  }
+}
