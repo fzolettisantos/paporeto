@@ -8,6 +8,9 @@ import type { BalaShot } from "@/types";
  */
 export const BALA_UPDATED_AT = "2026-11-09T12:00:00-03:00";
 
+/** Fonte dos dados, exibida no topo da aba. */
+export const BALA_SOURCE = "Data Caique informa";
+
 const shot = (
   id: string,
   quantity: number,

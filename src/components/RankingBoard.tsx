@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { AlertTriangle, CalendarClock, Crosshair, Megaphone, RefreshCw, Trophy, Users } from "lucide-react";
+import { AlertTriangle, CalendarClock, ChartNoAxesColumn, Crosshair, Megaphone, RefreshCw, Trophy, Users } from "lucide-react";
 import illustrations from "@/generated/ranking-illustrations.json";
 import { LayoutGroup } from "motion/react";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { RANKINGS } from "@/config/rankings";
 import { computeMoves, formatNumber, mergeLiveNumbers, sameStanding } from "@/lib/ranking";
+import { BALA_SOURCE } from "@/config/bala-do-veio";
 import { daysUntil } from "@/lib/period";
 import type { RankedEntry, RankingResults, RankingSlug, RankingView } from "@/types";
 import { PeriodSwitcher } from "./PeriodSwitcher";
@@ -131,7 +132,11 @@ export function RankingBoard({
         </div>
         <p className="mt-1.5 max-w-2xl text-[15px] leading-snug text-muted">{copy.description}</p>
         {results && isStatic ? (
-          <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] font-semibold text-muted">
+          <>
+          <p className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-extrabold text-yellow">
+            <ChartNoAxesColumn aria-hidden className="size-4" /> {BALA_SOURCE}
+          </p>
+          <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] font-semibold text-muted">
             <span className="inline-flex items-center gap-1">
               <Megaphone aria-hidden className="size-4" /> Quem define é o programa
             </span>
@@ -148,6 +153,7 @@ export function RankingBoard({
               <span className="rounded bg-yellow px-1.5 py-0.5 text-[11px] font-extrabold uppercase text-ink">Ordem simulada</span>
             ) : null}
           </p>
+          </>
         ) : null}
         {!isStatic ? <PeriodSwitcher value={view} onChange={onViewChange} /> : null}
         {!isStatic && results ? (
