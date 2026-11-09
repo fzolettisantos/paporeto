@@ -50,8 +50,6 @@ export function IndexPage() {
         </section>
 
         <div className="mx-auto max-w-5xl space-y-10 px-4 pt-6 sm:pt-8">
-          <ShowSchedule />
-
           <section aria-labelledby="rankings-title">
             <h2 id="rankings-title" className="font-display text-[28px] uppercase leading-none sm:text-4xl">
               Os rankings da resenha
@@ -96,6 +94,9 @@ export function IndexPage() {
               })}
             </ul>
           </section>
+
+          <ShowSchedule />
+
 
           <section aria-labelledby="bancada-title" className="rounded-3xl border border-line bg-surface p-5 sm:p-7">
             <div className="flex flex-wrap items-end justify-between gap-3">
