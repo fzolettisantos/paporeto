@@ -2,7 +2,9 @@
 
 import { MotionConfig, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { CHARGES_COPY, RANKINGS } from "@/config/rankings";
+import { CHARGES_COPY, RANKINGS, tabCopy } from "@/config/rankings";
+import { isRankingSlug } from "@/lib/validation";
+import { PersonagensGallery } from "./PersonagensGallery";
 import { site, withBase } from "@/config/site";
 import { shareCardImage } from "@/lib/client/share";
 import { hasResult, participantHeadline, rankingShareText } from "@/lib/share";
@@ -26,7 +28,7 @@ const resultKey = (slug: RankingSlug, view: RankingView) =>
 
 /** Endereço da aba, com o recorte quando não for a semana (?periodo=mes | temporada). */
 const tabPath = (tab: TabSlug, view: RankingView) =>
-  tab !== "charges" && RANKINGS[tab].mode === "vote" && view !== "week" ? `/${tab}?periodo=${VIEW_PARAM[view]}` : `/${tab}`;
+  isRankingSlug(tab) && RANKINGS[tab].mode === "vote" && view !== "week" ? `/${tab}?periodo=${VIEW_PARAM[view]}` : `/${tab}`;
 
 export function HomeExperience({
   initialTab,
@@ -64,7 +66,7 @@ export function HomeExperience({
     toastTimer.current = window.setTimeout(() => setToast((t) => ({ ...t, message: null })), 4_000);
   }, []);
 
-  const rankingSlug = tab === "charges" ? null : tab;
+  const rankingSlug = isRankingSlug(tab) ? tab : null;
 
   const storeResults = useCallback((next: RankingResults) => {
     setResults((current) => ({ ...current, [resultKey(next.slug, next.view)]: next }));
@@ -90,7 +92,7 @@ export function HomeExperience({
   };
 
   useEffect(() => {
-    const copy = tab === "charges" ? CHARGES_COPY : RANKINGS[tab];
+    const copy = tabCopy(tab);
     document.title = `${copy.title} | ${site.name}`;
   }, [tab]);
 
@@ -142,8 +144,10 @@ export function HomeExperience({
     stored && mine && stored.votingPeriod?.key === mine.week ? { ...stored, myVote: mine.id } : stored;
   const shareText = rankingSlug
     ? rankingShareText(rankingSlug, activeResults)
-    : "As charges do Oberdan no Papo Reto Ranking. Se virou charge, virou história!";
-  const shareTitle = rankingSlug ? RANKINGS[rankingSlug].title : CHARGES_COPY.title;
+    : tab === "personagens"
+      ? "Conheça as figuras do Papo Reto e as fichas criminais da resenha!"
+      : "As charges do Oberdan no Papo Reto Ranking. Se virou charge, virou história!";
+  const shareTitle = rankingSlug ? RANKINGS[rankingSlug].title : tab === "personagens" ? "Personagens do Papo Reto" : CHARGES_COPY.title;
   const leader = activeResults?.entries[0];
 
   return (
@@ -174,6 +178,8 @@ export function HomeExperience({
                 onShareParticipant={(entry) => shareParticipant(rankingSlug, entry)}
                 onRetry={() => void refresh()}
               />
+            ) : tab === "personagens" ? (
+              <PersonagensGallery />
             ) : (
               <ChargeGallery charges={charges} error={chargesError} notify={notify} />
             )}

@@ -1,0 +1,55 @@
+{
+  "benja": [
+    "/characters/benja/sabio/top.webp",
+    "/characters/benja/falou-merda/bottom.webp",
+    "/characters/benja/sabio/middle.webp",
+    "/characters/benja/falou-merda/top.webp",
+    "/characters/benja/sabio/bottom.webp"
+  ],
+  "carabina": [
+    "/characters/carabina/sabio/top.webp",
+    "/characters/carabina/falou-merda/bottom.webp",
+    "/characters/carabina/sabio/middle.webp",
+    "/characters/carabina/falou-merda/top.webp",
+    "/characters/carabina/bala-do-veio/top.webp"
+  ],
+  "gadu": [
+    "/characters/gadu/sabio/top.webp",
+    "/characters/gadu/falou-merda/bottom.webp",
+    "/characters/gadu/sabio/middle.webp",
+    "/characters/gadu/falou-merda/top.webp",
+    "/characters/gadu/bala-do-veio/top.webp"
+  ],
+  "joneta": [
+    "/characters/joneta/sabio/top.webp",
+    "/characters/joneta/falou-merda/bottom.webp",
+    "/characters/joneta/sabio/middle.webp",
+    "/characters/joneta/falou-merda/top.webp",
+    "/characters/joneta/falou-merda/middle.webp",
+    "/characters/joneta/sabio/bottom.webp",
+    "/characters/joneta/bala-do-veio/top.webp",
+    "/characters/joneta/bala-do-veio/middle.webp",
+    "/characters/joneta/bala-do-veio/bottom.webp"
+  ],
+  "kleber": [
+    "/characters/kleber/sabio/top.webp",
+    "/characters/kleber/falou-merda/bottom.webp",
+    "/characters/kleber/sabio/middle.webp",
+    "/characters/kleber/falou-merda/top.webp",
+    "/characters/kleber/bala-do-veio/top.webp"
+  ],
+  "mano": [
+    "/characters/mano/sabio/top.webp",
+    "/characters/mano/falou-merda/bottom.webp",
+    "/characters/mano/sabio/middle.webp",
+    "/characters/mano/falou-merda/top.webp",
+    "/characters/mano/sabio/bottom.webp"
+  ],
+  "veio-tricolor": [
+    "/characters/veio-tricolor/sabio/top.webp",
+    "/characters/veio-tricolor/falou-merda/bottom.webp",
+    "/characters/veio-tricolor/sabio/middle.webp",
+    "/characters/veio-tricolor/falou-merda/top.webp",
+    "/characters/veio-tricolor/sabio/bottom.webp"
+  ]
+}

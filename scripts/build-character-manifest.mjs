@@ -2,6 +2,7 @@
 // Assim o site sabe, sem requisições extras, quais expressões já foram fornecidas e quais
 // precisam do placeholder neutro. Roda sozinho antes de `dev` e `build`.
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
@@ -47,6 +48,26 @@ function imageSize(buf) {
   return { width: 800, height: 800 };
 }
 
+// Rostos diferentes de cada personagem (para a aba Personagens). Arquivos iguais em rankings diferentes contam uma vez.
+// Ordem: primeiro a expressão "de apresentação" (1º do Sábio), depois as demais.
+const FACE_ORDER = [
+  ["sabio", "top"], ["falou-merda", "bottom"], ["sabio", "middle"], ["falou-merda", "top"],
+  ["falou-merda", "middle"], ["sabio", "bottom"], ["bala-do-veio", "top"], ["bala-do-veio", "middle"],
+  ["bala-do-veio", "bottom"], ["falou-merda", "neutral"],
+];
+const faces = {};
+for (const [character, rankings] of Object.entries(manifest)) {
+  const seen = new Set();
+  for (const [ranking, state] of FACE_ORDER) {
+    const src = rankings[ranking]?.[state];
+    if (!src) continue;
+    const hash = createHash("sha1").update(await readFile(join(ROOT, "public", src))).digest("hex");
+    if (seen.has(hash)) continue;
+    seen.add(hash);
+    (faces[character] ??= []).push(src);
+  }
+}
+
 // Ilustrações dos rankings (abaixo do título): public/rankings/<ranking>.<ext>
 const RANKING_DIR = join(ROOT, "public", "rankings");
 const illustrations = {};
@@ -66,5 +87,6 @@ await writeFile(
 
 await mkdir(join(ROOT, "src", "generated"), { recursive: true });
 await writeFile(OUT, JSON.stringify(manifest, null, 2) + "\n");
+await writeFile(join(ROOT, "src", "generated", "character-faces.json"), JSON.stringify(faces, null, 2) + "\n");
 const count = Object.values(manifest).flatMap((r) => Object.values(r).flatMap((s) => Object.keys(s))).length;
 console.log(`[characters] ${count} caricatura(s) encontrada(s) em public/characters.`);

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { HomePage } from "@/components/HomePage";
-import { CHARGES_COPY, RANKINGS } from "@/config/rankings";
+import { tabCopy } from "@/config/rankings";
 import { site, withBase } from "@/config/site";
-import { isRankingSlug, isTabSlug } from "@/lib/validation";
+import { isTabSlug } from "@/lib/validation";
 import { TAB_SLUGS } from "@/types";
 
 /**
@@ -20,7 +20,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ tab: string }> }): Promise<Metadata> {
   const { tab } = await params;
   if (!isTabSlug(tab)) return {};
-  const copy = isRankingSlug(tab) ? RANKINGS[tab] : CHARGES_COPY;
+  const copy = tabCopy(tab);
   const description = `${copy.subtitle} ${copy.description}`;
   return {
     title: copy.title,

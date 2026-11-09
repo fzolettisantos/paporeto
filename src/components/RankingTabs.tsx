@@ -1,6 +1,6 @@
 "use client";
 
-import { Brain, Megaphone, PenTool, Target, type LucideIcon } from "lucide-react";
+import { Brain, Megaphone, PenTool, Target, Users, type LucideIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { tabLabel } from "@/config/rankings";
 import { TAB_SLUGS, type TabSlug } from "@/types";
@@ -10,6 +10,7 @@ const ICONS: Record<TabSlug, LucideIcon> = {
   sabio: Brain,
   "bala-do-veio": Target,
   charges: PenTool,
+  personagens: Users,
 };
 
 export const tabId = (slug: TabSlug) => `tab-${slug}`;

@@ -1,3 +1,4 @@
+import { PERSONAGENS_COPY } from "@/config/personagens";
 import type { ExpressionState, PeriodKind, RankingKind, RankingMode, RankingSlug, TabSlug } from "@/types";
 
 export interface RankingCopy {
@@ -164,8 +165,15 @@ export const CHARGES_COPY = {
   cta: "Ver as charges",
 };
 
+/** Textos de qualquer aba (título, subtítulo, descrição e rótulo). */
+export function tabCopy(slug: TabSlug): { tabLabel: string; title: string; subtitle: string; description: string } {
+  if (slug === "charges") return CHARGES_COPY;
+  if (slug === "personagens") return PERSONAGENS_COPY;
+  return RANKINGS[slug];
+}
+
 export function tabLabel(slug: TabSlug) {
-  return slug === "charges" ? CHARGES_COPY.tabLabel : RANKINGS[slug].tabLabel;
+  return tabCopy(slug).tabLabel;
 }
 
 /** Hash simples e estável (FNV-1a) para escolher frases sem aleatoriedade entre servidor e cliente. */

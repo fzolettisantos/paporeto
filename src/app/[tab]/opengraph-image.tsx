@@ -1,3 +1,4 @@
+import { PERSONAGENS_COPY } from "@/config/personagens";
 import { CHARGES_COPY, RANKINGS } from "@/config/rankings";
 import { renderOgImage, OG_SIZE } from "@/lib/og";
 import { isRankingSlug } from "@/lib/validation";
@@ -26,6 +27,9 @@ export default async function Image({ params }: { params: Promise<{ tab: string 
       subtitle: copy.subtitle,
       accent: copy.kind === "positive" ? "#32D583" : "#F04438",
     });
+  }
+  if (tab === "personagens") {
+    return renderOgImage({ eyebrow: "Elenco · fichas da resenha", title: "Os personagens do Papo Reto", subtitle: PERSONAGENS_COPY.subtitle, accent: "#FFD23F" });
   }
   return renderOgImage({ eyebrow: "Galeria", title: CHARGES_COPY.title, subtitle: CHARGES_COPY.subtitle, accent: "#FFD23F" });
 }
