@@ -88,7 +88,7 @@ export const PERSONAGENS: Personagem[] = [
     bio: "O Véio é a prova viva de que a paciência tem limite e a corneta não. São-paulino fanático, dono de um vocabulário que faria um juiz expulsar a bancada inteira. Quando ele abre a boca, alguém vira alvo. Se aparecer uma berinjela, é melhor correr.",
     especialidade: "Coçar o toba com a régua mágica.",
     superpoder: "Manjar no vestiário do XV.",
-    pontoFraco: "O São Paulo perdendo e chat/Krebi/Mano/Benja/Serdan/Carabas/Joneta/Caique aloprando.",
+    pontoFraco: "Serdan, o pesadelo do Véio.",
     riscoTexto: "Incalculável. Ele prefere chamar de sinceridade.",
     risco: 6,
     diagnostico: "Idoso apenas no RG, ex-detento do Baihal.",
