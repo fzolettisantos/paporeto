@@ -10,11 +10,6 @@ const SESSION_HOURS = 12;
 /** Senha cadastrada, sem espaços/quebras de linha nas pontas (comuns ao copiar e colar na Vercel). */
 const adminPassword = () => (process.env.ADMIN_PASSWORD ?? "").trim();
 
-/** DIAGNÓSTICO TEMPORÁRIO: tamanho da senha cadastrada (não revela a senha). */
-export function adminPasswordLength() {
-  return adminPassword().length;
-}
-
 export function isAdminConfigured() {
   return Boolean(adminPassword() && (process.env.ADMIN_SESSION_SECRET?.trim().length ?? 0) >= 32);
 }

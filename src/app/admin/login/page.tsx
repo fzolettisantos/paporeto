@@ -2,7 +2,7 @@ import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { withBase } from "@/config/site";
 import { rateLimit } from "@/lib/rate-limit";
-import { ADMIN_COOKIE, adminPasswordLength, checkPassword, createSessionValue, isAdminConfigured, sessionCookieOptions } from "@/lib/server/admin-auth";
+import { ADMIN_COOKIE, checkPassword, createSessionValue, isAdminConfigured, sessionCookieOptions } from "@/lib/server/admin-auth";
 import { clientIp } from "@/lib/server/request";
 
 export const dynamic = "force-dynamic";
@@ -12,15 +12,13 @@ async function login(formData: FormData) {
   const ip = clientIp(await headers());
   if (!rateLimit(`admin-login:${ip}`, { limit: 5, windowMs: 15 * 60_000 }).allowed) redirect(withBase("/admin/login?erro=limite"));
   const password = String(formData.get("password") ?? "");
-  // DIAGNÓSTICO TEMPORÁRIO: mostra só os tamanhos (digitado × cadastrado), nunca a senha.
-  if (!checkPassword(password)) redirect(withBase(`/admin/login?erro=senha&d=${password.trim().length}-${adminPasswordLength()}`));
+  if (!checkPassword(password)) redirect(withBase("/admin/login?erro=senha"));
   (await cookies()).set(ADMIN_COOKIE, createSessionValue(), sessionCookieOptions);
   redirect(withBase("/admin"));
 }
 
-export default async function LoginPage({ searchParams }: { searchParams: Promise<{ erro?: string; d?: string }> }) {
-  const { erro, d } = await searchParams;
-  const [typed, stored] = (d ?? "").split("-").map(Number);
+export default async function LoginPage({ searchParams }: { searchParams: Promise<{ erro?: string }> }) {
+  const { erro } = await searchParams;
   return (
     <main className="mx-auto max-w-sm">
       <h1 className="font-display text-3xl uppercase">Painel do Papo Reto Ranking</h1>
@@ -37,11 +35,6 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           {erro ? (
             <p role="alert" className="text-sm font-semibold text-red">
               {erro === "limite" ? "Muitas tentativas. Aguarde 15 minutos." : "Senha incorreta."}
-            </p>
-          ) : null}
-          {erro === "senha" && Number.isFinite(typed) && Number.isFinite(stored) ? (
-            <p className="text-xs text-muted">
-              Diagnóstico: você digitou {typed} caracteres; a senha cadastrada no site tem {stored}.
             </p>
           ) : null}
           <button className="min-h-12 w-full rounded-xl bg-yellow font-extrabold uppercase text-ink">Entrar</button>
