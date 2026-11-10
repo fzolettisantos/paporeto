@@ -32,14 +32,14 @@ export function demoTotals(slug: RankingSlug, periodKey: string, view: RankingVi
   );
 }
 
-export function demoMyVote(slug: RankingSlug, weekKey: string, voterKey: string): string | null {
-  return state().voters.get(`${slug}|${weekKey}|${voterKey}`) ?? null;
+export function demoMyVote(slug: RankingSlug, dayKey: string, voterKey: string): string | null {
+  return state().voters.get(`${slug}|${dayKey}|${voterKey}`) ?? null;
 }
 
-/** Mesmas regras do banco: 1 voto por semana; o voto soma na semana, no mês e na temporada. */
+/** Mesmas regras do banco: 1 voto por dia; o voto soma na semana, no mês e na temporada. */
 export function demoCastVote(input: {
   slug: RankingSlug;
-  keys: Record<RankingView, string>;
+  keys: Record<RankingView | "day", string>;
   participantId: string;
   voterKey: string;
   ipHash: string;
@@ -47,9 +47,9 @@ export function demoCastVote(input: {
 }): VoteStatus {
   const s = state();
   if (!DEMO_PARTICIPANTS.some((p) => p.id === input.participantId && inRanking(p, input.slug))) return "invalid";
-  const voterKey = `${input.slug}|${input.keys.week}|${input.voterKey}`;
+  const voterKey = `${input.slug}|${input.keys.day}|${input.voterKey}`;
   if (s.voters.has(voterKey)) return "duplicate";
-  const ipKey = `${input.slug}|${input.keys.week}|${input.ipHash}`;
+  const ipKey = `${input.slug}|${input.keys.day}|${input.ipHash}`;
   if ((s.perIp.get(ipKey) ?? 0) >= input.ipLimit) return "ip_limit";
 
   for (const view of ["week", "month", "season"] as const) {

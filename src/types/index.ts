@@ -19,8 +19,8 @@ export type ExpressionState = (typeof EXPRESSION_STATES)[number];
 export type PeriodKind = "daily" | "weekly" | "monthly" | "season" | "all_time";
 
 /**
- * Recortes dos rankings com votação. O voto é semanal e conta ao mesmo tempo
- * para a semana, o mês e a temporada (o ano — termina em 31/12).
+ * Recortes (filtros) dos rankings com votação. O voto é diário e soma ao mesmo tempo
+ * na semana, no mês e na temporada (o ano — termina em 31/12).
  */
 export const RANKING_VIEWS = ["week", "month", "season"] as const;
 export type RankingView = (typeof RANKING_VIEWS)[number];
@@ -83,6 +83,13 @@ export interface BalaShot {
   note: string | null;
 }
 
+/** Campeão de um período já encerrado (empates: mais de um). */
+export interface PeriodChampion {
+  view: RankingView;
+  period: VotingPeriod;
+  winners: { participant: Participant; votes: number }[];
+}
+
 export interface RankingResults {
   slug: RankingSlug;
   mode: RankingMode;
@@ -99,10 +106,12 @@ export interface RankingResults {
   updatedAt: string;
   /** Participante em quem este visitante votou no período, quando conhecido. */
   myVote?: string | null;
-  /** Período em que se vota (a semana atual): o voto do visitante vale para ele. */
+  /** Período em que se vota (o dia de hoje): o voto do visitante vale para ele. */
   votingPeriod?: VotingPeriod;
   /** Rankings estáticos: quando o programa atualizou a ordem pela última vez. */
   standingsUpdatedAt?: string | null;
+  /** Rankings com votação: campeões do período anterior de cada recorte (semana, mês e temporada passados). */
+  champions?: PeriodChampion[];
   /** Bala do Véio: tiros por participante (id → registros) e total de todos. */
   shots?: Record<string, BalaShot[]>;
   totalShots?: number;

@@ -146,7 +146,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
               <button className={button}>Salvar</button>
             </form>
           ))}
-          <p className="text-xs text-muted">Voto semanal: cada voto conta na semana, no mês e na temporada (ano, termina em 31/12). A semana define quando a pessoa pode votar de novo.</p>
+          <p className="text-xs text-muted">Voto diário: cada pessoa vota uma vez por dia, e o voto soma na semana, no mês e na temporada (ano, termina em 31/12). O dia de início da semana define o recorte “Semana”.</p>
         </div>
       </section>
 

@@ -67,3 +67,17 @@ export const DEMO_SEED_VOTES: Record<RankingSlug, Record<RankingView, Record<str
   },
   "bala-do-veio": { week: {}, month: {}, season: {} },
 };
+
+/** Placar SIMULADO do período anterior de cada recorte (para "Últimos campeões" no modo demonstração). */
+export const DEMO_PREVIOUS_VOTES: Partial<Record<RankingSlug, Record<RankingView, Record<string, number>>>> = {
+  "falou-merda": {
+    week: { mano: 1502, benja: 1340, "veio-tricolor": 880, joneta: 410, kleber: 233, carabina: 190, gadu: 98 },
+    month: { benja: 5230, mano: 4987, joneta: 2210, "veio-tricolor": 1900, carabina: 1201, kleber: 980, gadu: 455 },
+    season: { "veio-tricolor": 41200, benja: 39850, mano: 37010, carabina: 18300, joneta: 15020, gadu: 9100, kleber: 7300 },
+  },
+  sabio: {
+    week: { kleber: 620, mano: 488, benja: 301, joneta: 199, gadu: 120, carabina: 77, "veio-tricolor": 30 },
+    month: { mano: 2140, kleber: 1990, benja: 1320, joneta: 701, gadu: 520, carabina: 310, "veio-tricolor": 260 },
+    season: { benja: 23100, kleber: 22040, mano: 17400, gadu: 8800, joneta: 8100, carabina: 4900, "veio-tricolor": 2800 },
+  },
+};

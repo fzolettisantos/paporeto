@@ -1,11 +1,11 @@
 import "server-only";
 import { BALA_SHOTS, BALA_UPDATED_AT } from "@/config/bala-do-veio";
 import { INSTAGRAM_CHARGES, parseInstagramPostUrl } from "@/config/charges";
-import { DEMO_PARTICIPANTS } from "@/config/demo";
+import { DEMO_PARTICIPANTS, DEMO_PREVIOUS_VOTES } from "@/config/demo";
 import { RANKINGS } from "@/config/rankings";
-import { getViewPeriod, getVotingPeriod, isPeriodKind } from "@/lib/period";
+import { getPreviousViewPeriod, getViewPeriod, getVotingPeriod, isPeriodKind } from "@/lib/period";
 import { rankEntries } from "@/lib/ranking";
-import type { BalaShot, AvatarPaths, Charge, Participant, PeriodKind, RankingResults, RankingSlug, RankingView, VotingPeriod } from "@/types";
+import type { BalaShot, PeriodChampion, AvatarPaths, Charge, Participant, PeriodKind, RankingResults, RankingSlug, RankingView, VotingPeriod } from "@/types";
 import { inRanking, RANKING_SLUGS } from "@/types";
 import { demoMyVote, demoTotals } from "./demo-store";
 import { isSupabaseConfigured } from "./env";
@@ -23,6 +23,15 @@ function rankByShots(participants: Participant[], shots: Record<string, BalaShot
     participants.map((p) => ({ participant: p, votes: (shots[p.id] ?? []).reduce((t, s) => t + s.quantity, 0) })),
   ).map((entry) => ({ ...entry, votes: 0, percent: 0 }));
 }
+
+/** Vencedores de um placar (todos os empatados no topo); vazio se ninguém recebeu voto. */
+function topOf(participants: Participant[], totals: (id: string) => number): PeriodChampion["winners"] {
+  const scored = participants.map((p) => ({ participant: p, votes: totals(p.id) }));
+  const max = Math.max(0, ...scored.map((s) => s.votes));
+  return max > 0 ? scored.filter((s) => s.votes === max) : [];
+}
+
+const CHAMPION_VIEWS = ["week", "month", "season"] as const;
 
 /** Rankings estáticos não têm período de votação. */
 const STATIC_PERIOD: VotingPeriod = { kind: "all_time", key: "STATIC", label: "Ranking definido pelo programa" };
@@ -96,7 +105,7 @@ export async function getRankingConfigs(slugs: readonly RankingSlug[] = RANKING_
 
 /**
  * Resultados de um ou mais rankings. Rankings com votação: recorte `view` (semana, mês ou temporada),
- * com o voto do visitante na semana atual. Rankings estáticos ignoram o recorte.
+ * com o voto do visitante no dia de hoje e os campeões dos períodos anteriores. Rankings estáticos ignoram o recorte.
  */
 export async function getRankingResults(
   slugs: readonly RankingSlug[] = RANKING_SLUGS,
@@ -126,7 +135,7 @@ export async function getRankingResults(
           totalShots: sumShots(BALA_SHOTS),
         } satisfies RankingResults;
       }
-      const votingPeriod = getVotingPeriod("weekly", now, { weekStartsOn: config.weekStartsOn });
+      const votingPeriod = getVotingPeriod("daily", now, { weekStartsOn: config.weekStartsOn });
       const period = getViewPeriod(view, now, { weekStartsOn: config.weekStartsOn });
       const totals = demoTotals(config.slug, period.key, view);
       const entries = rankEntries(DEMO_PARTICIPANTS.filter((p) => inRanking(p, config.slug)).map((p) => ({ participant: p, votes: totals[p.id] ?? 0 })));
@@ -142,6 +151,11 @@ export async function getRankingResults(
         isDemo: true,
         updatedAt,
         myVote: options.voterKey ? demoMyVote(config.slug, votingPeriod.key, options.voterKey) : undefined,
+        champions: CHAMPION_VIEWS.map((v) => {
+          const seed = DEMO_PREVIOUS_VOTES[config.slug]?.[v] ?? {};
+          const inThis = DEMO_PARTICIPANTS.filter((p) => inRanking(p, config.slug));
+          return { view: v, period: getPreviousViewPeriod(v, now, { weekStartsOn: config.weekStartsOn }), winners: topOf(inThis, (id) => seed[id] ?? 0) };
+        }),
       };
     });
   }
@@ -196,12 +210,14 @@ export async function getRankingResults(
           totalShots: sumShots(shots),
         } satisfies RankingResults;
       }
-      const votingPeriod = getVotingPeriod("weekly", now, { weekStartsOn: config.weekStartsOn });
+      const votingPeriod = getVotingPeriod("daily", now, { weekStartsOn: config.weekStartsOn });
       const period = getViewPeriod(view, now, { weekStartsOn: config.weekStartsOn });
       const totals = new Map<string, number>();
       let myVote: string | null | undefined;
+      const previous = CHAMPION_VIEWS.map((v) => ({ view: v, period: getPreviousViewPeriod(v, now, { weekStartsOn: config.weekStartsOn }) }));
+      const previousTotals = new Map<string, Map<string, number>>();
       if (config.id) {
-        const [totalsRes, mineRes] = await Promise.all([
+        const [totalsRes, mineRes, previousRes] = await Promise.all([
           sb.from("vote_totals").select("participant_id, votes").eq("ranking_id", config.id).eq("period_key", period.key),
           options.voterKey
             ? sb
@@ -212,7 +228,16 @@ export async function getRankingResults(
                 .eq("voter_key", options.voterKey)
                 .maybeSingle()
             : Promise.resolve(null),
+          sb
+            .from("vote_totals")
+            .select("participant_id, period_key, votes")
+            .eq("ranking_id", config.id)
+            .in("period_key", previous.map((p) => p.period.key)),
         ]);
+        for (const row of (previousRes.data ?? []) as { participant_id: string; period_key: string; votes: number }[]) {
+          if (!previousTotals.has(row.period_key)) previousTotals.set(row.period_key, new Map());
+          previousTotals.get(row.period_key)!.set(row.participant_id, row.votes);
+        }
         if (totalsRes.error) throw new Error(`Erro ao carregar votos: ${totalsRes.error.message}`);
         for (const row of (totalsRes.data ?? []) as { participant_id: string; votes: number }[]) {
           totals.set(row.participant_id, row.votes);
@@ -232,6 +257,14 @@ export async function getRankingResults(
         isDemo: false,
         updatedAt,
         myVote,
+        champions: previous.map(({ view: v, period: prev }) => ({
+          view: v,
+          period: prev,
+          winners: topOf(
+            participants.filter((p) => inRanking(p, config.slug)),
+            (id) => previousTotals.get(prev.key)?.get(id) ?? 0,
+          ),
+        })),
       } satisfies RankingResults;
     }),
   );

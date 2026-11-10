@@ -82,7 +82,7 @@ export function IndexPage() {
                       <div className="flex flex-1 flex-col p-4">
                         <p className={`flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.16em] ${copy.kind === "positive" ? "text-green" : "text-red"}`}>
                           <Icon aria-hidden className="size-4" />
-                          {copy.mode === "static" ? "Ranking do programa" : "Vote toda semana"}
+                          {copy.mode === "static" ? "Ranking do programa" : "Vote todo dia"}
                         </p>
                         <h3 className="mt-1 font-display text-2xl uppercase leading-tight">{copy.title}</h3>
                         <p className="mt-1 text-[15px] leading-snug text-muted">{copy.subtitle}</p>

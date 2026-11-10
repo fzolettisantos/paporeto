@@ -25,7 +25,7 @@ export async function castVote(input: {
   const [config] = await getRankingConfigs([input.ranking]);
   if (!config) return "invalid";
   if (!config.active) return "closed";
-  // Voto semanal que soma também no mês e na temporada (ano) da data do voto.
+  // Voto diário que soma na semana, no mês e na temporada (ano) da data do voto.
   const keys = getVoteKeys(input.now ?? new Date(), { weekStartsOn: config.weekStartsOn });
   const ipLimit = getIpVoteLimit();
 
@@ -43,7 +43,8 @@ export async function castVote(input: {
   const { data, error } = await getServiceClient().rpc("cast_vote", {
     p_ranking_slug: input.ranking,
     p_participant_id: input.participantId,
-    p_period_key: keys.week,
+    p_period_key: keys.day,
+    p_week_key: keys.week,
     p_month_key: keys.month,
     p_season_key: keys.season,
     p_voter_key: input.voterKey,

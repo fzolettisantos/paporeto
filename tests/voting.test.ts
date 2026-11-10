@@ -3,7 +3,7 @@ import { __resetRateLimit, rateLimit } from "@/lib/rate-limit";
 import { parseVoteRequest } from "@/lib/validation";
 import { __resetDemoStore, demoCastVote, demoMyVote, demoTotals } from "@/lib/server/demo-store";
 
-const keys = { week: "W2026-11-09", month: "M2026-11", season: "S2026" };
+const keys = { day: "D2026-11-10", week: "W2026-11-09", month: "M2026-11", season: "S2026" };
 const base = { slug: "falou-merda" as const, keys, ipHash: "ip1", ipLimit: 3 };
 
 describe("votação (modo demonstração, mesma regra do banco)", () => {
@@ -13,7 +13,7 @@ describe("votação (modo demonstração, mesma regra do banco)", () => {
     const before = demoTotals("falou-merda", keys.week)["joneta"]!;
     expect(demoCastVote({ ...base, participantId: "joneta", voterKey: "v1" })).toBe("ok");
     expect(demoTotals("falou-merda", keys.week)["joneta"]).toBe(before + 1);
-    expect(demoMyVote("falou-merda", keys.week, "v1")).toBe("joneta");
+    expect(demoMyVote("falou-merda", keys.day, "v1")).toBe("joneta");
   });
 
   it("o voto soma na semana, no mês e na temporada", () => {
@@ -25,15 +25,15 @@ describe("votação (modo demonstração, mesma regra do banco)", () => {
     expect(before("season")).toBe(b.season + 1);
   });
 
-  it("bloqueia voto duplicado no mesmo ranking e período", () => {
+  it("bloqueia o segundo voto no mesmo ranking no mesmo dia", () => {
     expect(demoCastVote({ ...base, participantId: "benja", voterKey: "v1" })).toBe("ok");
     expect(demoCastVote({ ...base, participantId: "mano", voterKey: "v1" })).toBe("duplicate");
   });
 
-  it("permite votar em outro ranking e no período seguinte", () => {
+  it("permite votar em outro ranking e de novo no dia seguinte", () => {
     expect(demoCastVote({ ...base, participantId: "benja", voterKey: "v1" })).toBe("ok");
     expect(demoCastVote({ ...base, slug: "sabio", participantId: "benja", voterKey: "v1" })).toBe("ok");
-    expect(demoCastVote({ ...base, keys: { ...keys, week: "W2026-11-16" }, participantId: "benja", voterKey: "v1" })).toBe("ok");
+    expect(demoCastVote({ ...base, keys: { ...keys, day: "D2026-11-11" }, participantId: "benja", voterKey: "v1" })).toBe("ok");
   });
 
   it("limita votos por IP no período (troca de cookie não burla)", () => {
@@ -69,7 +69,7 @@ describe("rate limit", () => {
 describe("participante fora do ranking", () => {
   beforeEach(() => __resetDemoStore());
   it("não recebe voto em ranking em que não entra", () => {
-    const k = { week: "W2026-11-09", month: "M2026-11", season: "S2026" };
+    const k = { day: "D2026-11-10", week: "W2026-11-09", month: "M2026-11", season: "S2026" };
     expect(demoCastVote({ slug: "sabio", keys: k, participantId: "serdan", voterKey: "x", ipHash: "i", ipLimit: 9 })).toBe("invalid");
     expect(demoCastVote({ slug: "sabio", keys: k, participantId: "veio-tricolor", voterKey: "x", ipHash: "i", ipLimit: 9 })).toBe("ok");
   });

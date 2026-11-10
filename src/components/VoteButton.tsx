@@ -21,7 +21,7 @@ export function VoteButton({
   if (state === "voted") {
     return (
       <p className={`${base} border-2 border-green bg-green/10 text-green`} role="status">
-        <Check aria-hidden className="size-5" /> Seu voto da semana
+        <Check aria-hidden className="size-5" /> Seu voto de hoje
         <span className="sr-only"> foi para {participantName}</span>
       </p>
     );
@@ -30,7 +30,7 @@ export function VoteButton({
     return (
       <button type="button" disabled className={`${base} cursor-not-allowed bg-surface-2 text-muted`}>
         <Lock aria-hidden className="size-4" />
-        {state === "closed" ? "Votação pausada" : "Já votou esta semana"}
+        {state === "closed" ? "Votação pausada" : "Já votou hoje · volte amanhã"}
       </button>
     );
   }

@@ -110,3 +110,13 @@ describe("participante só em alguns rankings", () => {
     expect(at("benja").state).toBe("bottom"); // sem tiros: escapou
   });
 });
+
+describe("últimos campeões", () => {
+  it("cada ranking com votação traz o campeão da semana, do mês e da temporada passados", async () => {
+    const [fm] = await getRankingResults(["falou-merda"]);
+    expect(fm!.champions!.map((c) => c.view)).toEqual(["week", "month", "season"]);
+    expect(fm!.champions![0]!.winners[0]!.participant.id).toBe("mano");
+    const [bala] = await getRankingResults(["bala-do-veio"]);
+    expect(bala!.champions).toBeUndefined();
+  });
+});

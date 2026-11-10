@@ -119,13 +119,14 @@ public/characters/benja/bala-do-veio/…
 ## Votação
 
 - Só **Falou Mais Merda** e **O Mais Sábio** têm votação.
-- **Semana, mês e temporada.** Cada ranking com votação tem três recortes, escolhidos no seletor
-  "Semana · Mês · Temporada" (e no link: `?periodo=mes` ou `?periodo=temporada`). A pessoa vota **uma vez por
-  semana** em cada ranking, e esse voto soma ao mesmo tempo na semana, no mês e na temporada da data do voto.
-- **A temporada é o ano** e termina em 31/12: quem estiver no topo da temporada leva o título do ano. O site mostra
-  quantos dias faltam. A semana começa na segunda (configurável no painel), no fuso de São Paulo.
-- No banco, cada voto guarda as três chaves (`period_key` = semana, `month_key`, `season_key`) e o placar
-  `vote_totals` tem uma linha por recorte (`W2026-11-09`, `M2026-11`, `S2026`).
+- **Voto diário.** A pessoa vota **uma vez por dia** em cada ranking, e o voto soma ao mesmo tempo na semana,
+  no mês e na temporada da data do voto (fuso de São Paulo).
+- **Filtros Semana · Mês · Temporada** mostram quem lidera em cada período (também no link: `?periodo=mes` ou
+  `?periodo=temporada`). A temporada é o ano e termina em 31/12.
+- **Últimos campeões:** acima do ranking aparecem os campeões da semana passada, do mês passado e da temporada
+  passada (empates mostram todos); o do filtro escolhido fica em destaque.
+- No banco, cada voto guarda o dia (`period_key`, que garante 1 voto por dia) e `week_key`, `month_key` e
+  `season_key`; o placar `vote_totals` tem uma linha por período.
 - A validação acontece **no servidor e no banco** (`cast_vote`): ranking ativo, participante ativo,
   voto único por votante/ranking/período (restrição `unique`) e limite de votos por IP no período.
 - O votante é identificado por um cookie `httpOnly` assinado (HMAC). No banco ficam só hashes (`voter_key`, `ip_hash`), nunca o IP ou o cookie.

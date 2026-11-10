@@ -51,7 +51,7 @@ export function HomeExperience({
   const [results, setResults] = useState<ResultsMap>(() =>
     Object.fromEntries(initialResults.map((r) => [resultKey(r.slug, r.view), r])),
   );
-  /** Em quem a pessoa votou na semana atual, por ranking (vale para os três recortes). */
+  /** Em quem a pessoa votou hoje, por ranking (vale para os três recortes). */
   const [myVotes, setMyVotes] = useState<Partial<Record<RankingSlug, { week: string; id: string | null }>>>({});
   const [errors, setErrors] = useState<Partial<Record<RankingSlug, boolean>>>(() =>
     initialError ? { "falou-merda": true, sabio: true, "bala-do-veio": true } : {},

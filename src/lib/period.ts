@@ -42,7 +42,7 @@ export function getVotingPeriod(
 
   switch (kind) {
     case "daily":
-      return { kind, key: `D${iso(today)}`, label: `Votação de hoje (${short(today)})` };
+      return { kind, key: `D${iso(today)}`, label: `Hoje (${short(today)})`, endsOn: iso(today) };
     case "monthly":
       return {
         kind,
@@ -78,15 +78,32 @@ export function getViewPeriod(view: RankingView, now: Date = new Date(), options
 }
 
 /**
- * Chaves em que um voto é contado: a semana (que também limita a 1 voto),
- * o mês e a temporada da data do voto.
+ * Chaves de um voto: o dia (limita a 1 voto por dia) e a semana, o mês e a temporada
+ * da data do voto, onde ele é somado.
  */
 export function getVoteKeys(now: Date = new Date(), options: { weekStartsOn?: number } = {}) {
   return {
+    day: getVotingPeriod("daily", now, options).key,
     week: getVotingPeriod("weekly", now, options).key,
     month: getVotingPeriod("monthly", now, options).key,
     season: getVotingPeriod("season", now, options).key,
   };
+}
+
+/** Primeiro dia (AAAA-MM-DD) de um período de semana, mês ou temporada, a partir da chave. */
+function periodStart(period: VotingPeriod): string {
+  if (period.key.startsWith("W")) return period.key.slice(1);
+  if (period.key.startsWith("M")) return `${period.key.slice(1)}-01`;
+  return `${period.key.slice(1)}-01-01`;
+}
+
+/** Período anterior ao recorte atual: semana passada, mês passado ou temporada passada. */
+export function getPreviousViewPeriod(view: RankingView, now: Date = new Date(), options: { weekStartsOn?: number } = {}) {
+  const current = getViewPeriod(view, now, options);
+  // Meio-dia de Brasília do dia anterior ao início do período atual.
+  const before = new Date(`${periodStart(current)}T12:00:00-03:00`);
+  before.setUTCDate(before.getUTCDate() - 1);
+  return getViewPeriod(view, before, options);
 }
 
 /** Dias inteiros até o fim do período (0 = último dia), contando no fuso do programa. */

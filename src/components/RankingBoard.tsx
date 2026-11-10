@@ -10,6 +10,7 @@ import { computeMoves, formatNumber, mergeLiveNumbers, sameStanding } from "@/li
 import { BALA_SOURCE } from "@/config/bala-do-veio";
 import { daysUntil } from "@/lib/period";
 import type { RankedEntry, RankingResults, RankingSlug, RankingView } from "@/types";
+import { ChampionsStrip } from "./ChampionsStrip";
 import { PeriodSwitcher } from "./PeriodSwitcher";
 import { shotsLabel } from "./ShotsTable";
 import type { Move } from "./RankingPosition";
@@ -234,6 +235,7 @@ export function RankingBoard({
               <RefreshCw aria-hidden className="size-4" /> O ranking mudou — atualizar posições
             </button>
           ) : null}
+          {!isStatic && results.champions?.length ? <ChampionsStrip slug={slug} champions={results.champions} view={view} /> : null}
           {isStatic ? (
             // Fonte dos dados do Bala do Véio, em destaque acima do ranking.
             <p className="mb-3 flex items-center gap-2 font-display text-2xl uppercase leading-none tracking-wide text-yellow sm:text-[28px]">
@@ -289,7 +291,7 @@ export function RankingBoard({
           <p className="mt-3 text-xs text-muted">
             {isStatic
               ? "Brincadeira interna do programa: a ordem é definida pelo Papo Reto, não por votação."
-              : "Você vota uma vez por semana em cada ranking, e o voto conta na semana, no mês e na temporada. As posições se reorganizam após o seu voto ou a cada poucos segundos, sem pular cards enquanto você escolhe."}
+              : "Você vota uma vez por dia em cada ranking, e o voto soma na semana, no mês e na temporada. Use Semana, Mês e Temporada para ver quem lidera em cada período."}
           </p>
         </>
       )}

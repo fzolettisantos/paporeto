@@ -15,8 +15,8 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const MESSAGES: Record<VoteStatus, string> = {
   ok: "Voto registrado!",
-  duplicate: "Você já votou neste ranking neste período.",
-  ip_limit: "Muitos votos saindo da sua rede neste período. Tente mais tarde.",
+  duplicate: "Você já votou neste ranking hoje. Volte amanhã!",
+  ip_limit: "Muitos votos saindo da sua rede hoje. Tente amanhã.",
   rate_limited: "Calma, craque! Muitos votos em pouco tempo. Tente de novo em instantes.",
   invalid: "Voto inválido.",
   closed: "A votação deste ranking está pausada.",
