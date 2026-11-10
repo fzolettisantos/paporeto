@@ -153,7 +153,17 @@ export function RankingBoard({
           </p>
           </>
         ) : null}
-        {!isStatic ? <PeriodSwitcher value={view} onChange={onViewChange} /> : null}
+        {!isStatic ? (
+          <>
+            <p className="mt-4 rounded-xl border border-line bg-bg/60 px-3 py-2.5 text-[13px] leading-snug text-muted">
+              <strong className="text-white">Vote todo dia!</strong> Cada pessoa tem <strong className="text-white">1 voto por dia</strong>{" "}
+              neste ranking, e ele soma na semana, no mês e na temporada. Toque em{" "}
+              <strong className="text-yellow">Semana</strong>, <strong className="text-yellow">Mês</strong> ou{" "}
+              <strong className="text-yellow">Temporada</strong> para ver quem está liderando em cada período.
+            </p>
+            <PeriodSwitcher value={view} onChange={onViewChange} />
+          </>
+        ) : null}
         {!isStatic && results ? (
           <div className="mt-3 space-y-1.5 text-[13px] font-semibold text-muted">
             <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
