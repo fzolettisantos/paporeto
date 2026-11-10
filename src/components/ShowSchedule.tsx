@@ -38,9 +38,9 @@ export function ShowSchedule() {
     <section aria-labelledby="schedule-title" className="relative overflow-hidden rounded-3xl border border-line bg-surface p-5 sm:p-7">
       <div aria-hidden className="pointer-events-none absolute -right-16 -top-16 size-56 rounded-full bg-red/15 blur-3xl" />
       <div className="relative">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 id="schedule-title" className="font-display text-[28px] uppercase leading-none sm:text-4xl">
-            Papo Reto <span className="text-yellow">no ar</span>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <h2 id="schedule-title" className="max-w-2xl font-display text-[24px] uppercase leading-[1.05] sm:text-[32px]">
+            Joneta, Joneta... abre a jauleta... <span className="text-yellow">o Papo Reto vai começar...</span>
           </h2>
           {status?.live ? (
             <span className="inline-flex items-center gap-2 rounded-full bg-red px-3 py-1.5 text-sm font-extrabold uppercase tracking-wide text-white" role="status">
