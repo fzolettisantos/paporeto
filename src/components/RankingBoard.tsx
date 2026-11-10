@@ -155,13 +155,10 @@ export function RankingBoard({
         ) : null}
         {!isStatic ? (
           <>
-            <p className="mt-4 rounded-xl border border-line bg-bg/60 px-3 py-2.5 text-[13px] leading-snug text-muted">
-              <strong className="text-white">Vote todo dia!</strong> Cada pessoa tem <strong className="text-white">1 voto por dia</strong>{" "}
-              neste ranking, e ele soma na semana, no mês e na temporada. Toque em{" "}
-              <strong className="text-yellow">Semana</strong>, <strong className="text-yellow">Mês</strong> ou{" "}
-              <strong className="text-yellow">Temporada</strong> para ver quem está liderando em cada período.
+            <p className="mt-4 text-[13px] leading-snug text-muted">
+              <strong className="text-white">1 voto por dia</strong>, que soma na semana, no mês e na temporada. Veja quem lidera em cada uma:
             </p>
-            <PeriodSwitcher value={view} onChange={onViewChange} />
+            <PeriodSwitcher value={view} onChange={onViewChange} compact />
           </>
         ) : null}
         {!isStatic && results ? (

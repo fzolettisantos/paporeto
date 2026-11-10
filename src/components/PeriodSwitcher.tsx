@@ -4,9 +4,9 @@ import { VIEW_LABEL } from "@/lib/period";
 import { RANKING_VIEWS, type RankingView } from "@/types";
 
 /** Seletor Semana · Mês · Temporada (botões com aria-pressed, 44px de toque). */
-export function PeriodSwitcher({ value, onChange }: { value: RankingView; onChange: (view: RankingView) => void }) {
+export function PeriodSwitcher({ value, onChange, compact }: { value: RankingView; onChange: (view: RankingView) => void; compact?: boolean }) {
   return (
-    <div role="group" aria-label="Período do ranking" className="mt-4 grid grid-cols-3 gap-1 rounded-xl border border-line bg-surface p-1">
+    <div role="group" aria-label="Período do ranking" className={`${compact ? "mt-2" : "mt-4"} grid grid-cols-3 gap-1 rounded-xl border border-line bg-surface p-1`}>
       {RANKING_VIEWS.map((view) => {
         const active = view === value;
         return (
