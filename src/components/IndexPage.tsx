@@ -68,14 +68,14 @@ export function IndexPage() {
                       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-[transform,border-color] hover:-translate-y-1 hover:border-yellow"
                     >
                       {art ? (
-                        // A arte inteira, centralizada (troféus são quadrados; a do Véio é 3:2).
+                        // A arte inteira: troféus (quadrados) centralizados; a do Véio (3:2) encostada embaixo, junto do texto.
                         <div className="relative aspect-[4/3] overflow-hidden" style={{ backgroundColor: ART_BG[slug] }}>
                           <Image
                             src={art.src}
                             alt=""
                             fill
                             sizes="(min-width: 640px) 33vw, 100vw"
-                            className="object-contain object-center transition-transform duration-500 group-hover:scale-105"
+                            className={`object-contain transition-transform ${art.width > art.height ? "object-bottom" : "object-center"} duration-500 group-hover:scale-105`}
                           />
                         </div>
                       ) : null}
