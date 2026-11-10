@@ -15,3 +15,5 @@ O `npm run dev` / `npm run build` gera `src/generated/character-manifest.json` c
 Expressões que faltarem usam o placeholder ilustrado neutro — o site nunca troca por outra expressão.
 
 Também é possível enviar caricaturas pelo painel `/admin` (Supabase Storage).
+
+**Foto de apresentação** (aba A Bancada e página inicial): `public/characters/<slug>/bancada.webp`. Se existir, aparece primeiro; o toque na caricatura passa pelas demais expressões.

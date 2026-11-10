@@ -56,8 +56,17 @@ const FACE_ORDER = [
   ["bala-do-veio", "bottom"], ["falou-merda", "neutral"],
 ];
 const faces = {};
+// Foto de apresentação (public/characters/<slug>/bancada.webp|png|avif): sempre a primeira.
+const PRESENTATION = ["webp", "png", "avif"].map((ext) => `bancada.${ext}`);
 for (const [character, rankings] of Object.entries(manifest)) {
   const seen = new Set();
+  const dir = join(CHAR_DIR, character);
+  const presentation = PRESENTATION.find((file) => existsSync(join(dir, file)));
+  if (presentation) {
+    const src = `/characters/${character}/${presentation}`;
+    seen.add(createHash("sha1").update(await readFile(join(ROOT, "public", src))).digest("hex"));
+    (faces[character] ??= []).push(src);
+  }
   for (const [ranking, state] of FACE_ORDER) {
     const src = rankings[ranking]?.[state];
     if (!src) continue;
