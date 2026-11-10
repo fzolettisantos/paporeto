@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { site } from "@/config/site";
+import { InstagramIcon } from "./InstagramIcon";
 
 export function Footer({ showCaricatureCredit }: { showCaricatureCredit: boolean }) {
   return (
@@ -33,6 +34,20 @@ export function Footer({ showCaricatureCredit }: { showCaricatureCredit: boolean
           <li>Papo Reto e Canal do Benja são marcas de seus respectivos titulares.</li>
           <li>Rankings de humor: os votos expressam a opinião do público, sem qualquer valor oficial.</li>
         </ul>
+
+        <p className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-line pt-4 text-sm text-muted">
+          Feito por <strong className="text-white">Fiapo de Manga Studio</strong>
+          <span aria-hidden>·</span>
+          <a
+            href="https://www.instagram.com/francisco.zoletti/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 items-center gap-1.5 font-bold text-white transition-colors hover:text-yellow"
+          >
+            <InstagramIcon className="size-4" />@francisco.zoletti
+            <span className="sr-only"> no Instagram (abre em nova aba)</span>
+          </a>
+        </p>
       </div>
     </footer>
   );
