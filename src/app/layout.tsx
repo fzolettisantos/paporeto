@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Anton, Barlow } from "next/font/google";
 import { site, withBase } from "@/config/site";
 import "./globals.css";
@@ -48,6 +49,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Pular para os rankings
         </a>
         {children}
+        {/* Vercel Web Analytics: visitas e páginas, sem cookies. Ativar na aba Analytics do projeto. */}
+        <Analytics />
       </body>
     </html>
   );
