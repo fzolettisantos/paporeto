@@ -3,7 +3,7 @@ export const RANKING_SLUGS = ["falou-merda", "sabio", "bala-do-veio"] as const;
 export type RankingSlug = (typeof RANKING_SLUGS)[number];
 
 /** Abas da Home: os três rankings, a galeria de charges e as fichas dos personagens. */
-export const TAB_SLUGS = [...RANKING_SLUGS, "charges", "bancada"] as const;
+export const TAB_SLUGS = [...RANKING_SLUGS, "bancada", "charges"] as const;
 export type TabSlug = (typeof TAB_SLUGS)[number];
 
 /** Negativo: estar no topo é ruim. Positivo: estar no topo é bom. */
