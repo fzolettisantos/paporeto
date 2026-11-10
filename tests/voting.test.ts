@@ -74,3 +74,15 @@ describe("participante fora do ranking", () => {
     expect(demoCastVote({ slug: "sabio", keys: k, participantId: "veio-tricolor", voterKey: "x", ipHash: "i", ipLimit: 9 })).toBe("ok");
   });
 });
+
+describe("senha do painel", () => {
+  it("ignora espaços nas pontas da senha digitada e da cadastrada", async () => {
+    process.env.ADMIN_PASSWORD = "  Corneta#2026\n";
+    process.env.ADMIN_SESSION_SECRET = "x".repeat(40);
+    const { checkPassword, isAdminConfigured } = await import("@/lib/server/admin-auth");
+    expect(isAdminConfigured()).toBe(true);
+    expect(checkPassword("Corneta#2026")).toBe(true);
+    expect(checkPassword(" Corneta#2026 ")).toBe(true);
+    expect(checkPassword("corneta#2026")).toBe(false);
+  });
+});

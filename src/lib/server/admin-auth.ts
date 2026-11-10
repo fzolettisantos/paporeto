@@ -7,8 +7,11 @@ import { hmac, safeEqual } from "./crypto";
 export const ADMIN_COOKIE = "prr_admin";
 const SESSION_HOURS = 12;
 
+/** Senha cadastrada, sem espaços/quebras de linha nas pontas (comuns ao copiar e colar na Vercel). */
+const adminPassword = () => (process.env.ADMIN_PASSWORD ?? "").trim();
+
 export function isAdminConfigured() {
-  return Boolean(process.env.ADMIN_PASSWORD && (process.env.ADMIN_SESSION_SECRET?.length ?? 0) >= 32);
+  return Boolean(adminPassword() && (process.env.ADMIN_SESSION_SECRET?.trim().length ?? 0) >= 32);
 }
 
 function secret() {
@@ -18,7 +21,7 @@ function secret() {
 export function checkPassword(candidate: string) {
   if (!isAdminConfigured()) return false;
   // Compara HMACs (mesmo tamanho) para não vazar o tamanho da senha pelo tempo de resposta.
-  return safeEqual(hmac(secret(), candidate), hmac(secret(), process.env.ADMIN_PASSWORD!));
+  return safeEqual(hmac(secret(), candidate.trim()), hmac(secret(), adminPassword()));
 }
 
 export function createSessionValue(now = Date.now()) {
