@@ -10,7 +10,7 @@ const ICONS: Record<TabSlug, LucideIcon> = {
   sabio: Brain,
   "bala-do-veio": Target,
   charges: PenTool,
-  personagens: Users,
+  bancada: Users,
 };
 
 export const tabId = (slug: TabSlug) => `tab-${slug}`;

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown, Flame, RefreshCw, ShieldAlert, Stethoscope, Target, Zap } from "lucide-react";
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import faces from "@/generated/character-faces.json";
 import { PERSONAGENS, PERSONAGENS_COPY, RISCO_LABEL, type Personagem } from "@/config/personagens";
 import { InstagramIcon } from "./InstagramIcon";
@@ -96,18 +96,41 @@ const FIELDS = [
   { key: "pontoFraco", label: "Ponto fraco", Icon: ShieldAlert },
 ] as const;
 
-function PersonagemCard({ personagem, index }: { personagem: Personagem; index: number }) {
-  const [open, setOpen] = useState(false);
+/** Personagem indicado no endereço (ex.: /bancada#benja), atualizado quando o # muda. */
+function subscribeHash(onChange: () => void) {
+  window.addEventListener("hashchange", onChange);
+  return () => window.removeEventListener("hashchange", onChange);
+}
+function useHashSlug() {
+  return useSyncExternalStore(subscribeHash, () => decodeURIComponent(window.location.hash.slice(1)), () => "");
+}
+
+function PersonagemCard({ personagem, index, linked }: { personagem: Personagem; index: number; linked: boolean }) {
+  // Aberta pelo link (/bancada#slug) até a pessoa abrir/fechar manualmente.
+  const [override, setOverride] = useState<boolean | null>(null);
+  const open = override ?? linked;
+  const setOpen = (next: (v: boolean) => boolean) => setOverride(next(open));
+  const ref = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    if (!linked) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Espera a ficha abrir e a grade se reorganizar (no desktop ela passa a ocupar a linha toda) antes de rolar.
+    const id = window.setTimeout(() => ref.current?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }), 550);
+    return () => window.clearTimeout(id);
+  }, [linked]);
   const detailsId = useId();
 
   return (
     <motion.li
+      ref={ref}
+      id={personagem.slug}
       layout
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ delay: (index % 3) * 0.07, type: "spring", stiffness: 260, damping: 26 }}
-      className={`min-w-0 list-none ${open ? "sm:col-span-2 lg:col-span-3" : ""}`}
+      className={`min-w-0 scroll-mt-20 list-none ${open ? "sm:col-span-2 lg:col-span-3" : ""}`}
     >
       <article
         className="relative h-full overflow-hidden rounded-2xl border border-line bg-surface"
@@ -236,11 +259,12 @@ function PersonagemCard({ personagem, index }: { personagem: Personagem; index: 
 }
 
 export function PersonagensGallery() {
+  const hashSlug = useHashSlug();
   return (
     <div>
       <header className="mb-5">
         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-yellow">Elenco · fichas da resenha</p>
-        <h2 id="title-personagens" className="mt-1 font-display text-[32px] uppercase leading-none sm:text-5xl">
+        <h2 id="title-bancada" className="mt-1 font-display text-[32px] uppercase leading-none sm:text-5xl">
           {PERSONAGENS_COPY.title}
         </h2>
         <p className="mt-2 text-lg font-bold leading-snug text-yellow">{PERSONAGENS_COPY.subtitle}</p>
@@ -251,7 +275,7 @@ export function PersonagensGallery() {
       </header>
       <motion.ul layout className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {PERSONAGENS.map((personagem, index) => (
-          <PersonagemCard key={personagem.slug} personagem={personagem} index={index} />
+          <PersonagemCard key={personagem.slug} personagem={personagem} index={index} linked={hashSlug === personagem.slug} />
         ))}
       </motion.ul>
     </div>

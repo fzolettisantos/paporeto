@@ -32,6 +32,10 @@ const nextConfig: NextConfig = {
   experimental: {
     serverActions: { bodySizeLimit: "4mb" },
   },
+  // A aba Personagens virou A Bancada: links antigos continuam funcionando.
+  async redirects() {
+    return [{ source: "/personagens", destination: "/bancada", permanent: true }];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

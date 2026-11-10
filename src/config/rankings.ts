@@ -168,7 +168,7 @@ export const CHARGES_COPY = {
 /** Textos de qualquer aba (título, subtítulo, descrição e rótulo). */
 export function tabCopy(slug: TabSlug): { tabLabel: string; title: string; subtitle: string; description: string } {
   if (slug === "charges") return CHARGES_COPY;
-  if (slug === "personagens") return PERSONAGENS_COPY;
+  if (slug === "bancada") return PERSONAGENS_COPY;
   return RANKINGS[slug];
 }
 

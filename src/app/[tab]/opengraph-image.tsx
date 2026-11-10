@@ -28,7 +28,7 @@ export default async function Image({ params }: { params: Promise<{ tab: string 
       accent: copy.kind === "positive" ? "#32D583" : "#F04438",
     });
   }
-  if (tab === "personagens") {
+  if (tab === "bancada") {
     return renderOgImage({ eyebrow: "Elenco · fichas da resenha", title: "Os personagens do Papo Reto", subtitle: PERSONAGENS_COPY.subtitle, accent: "#FFD23F" });
   }
   return renderOgImage({ eyebrow: "Galeria", title: CHARGES_COPY.title, subtitle: CHARGES_COPY.subtitle, accent: "#FFD23F" });

@@ -41,7 +41,7 @@ export function IndexPage() {
                 Ver os rankings <ArrowRight aria-hidden className="size-5" />
               </Link>
               <Link
-                href={withBase("/personagens")}
+                href={withBase("/bancada")}
                 className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-line bg-surface px-5 font-extrabold uppercase tracking-wide text-white transition-colors hover:border-yellow"
               >
                 <Users aria-hidden className="size-5" /> Conheça a bancada
@@ -110,7 +110,7 @@ export function IndexPage() {
                 <p className="mt-1 text-muted">Sete figuras, um hospício esportivo. Abra a ficha criminal de cada um.</p>
               </div>
               <Link
-                href={withBase("/personagens")}
+                href={withBase("/bancada")}
                 className="inline-flex min-h-11 items-center gap-1 text-sm font-extrabold uppercase text-yellow"
               >
                 Ver fichas <ArrowRight aria-hidden className="size-4" />
@@ -121,7 +121,7 @@ export function IndexPage() {
                 const face = FACES[p.slug]?.[0];
                 return (
                   <li key={p.slug}>
-                    <Link href={withBase("/personagens")} className="group flex flex-col items-center gap-1.5 text-center">
+                    <Link href={withBase(`/bancada#${p.slug}`)} className="group flex flex-col items-center gap-1.5 text-center" aria-label={`Abrir a ficha de ${p.name}`}>
                       <span
                         className="relative size-16 overflow-hidden rounded-full bg-[#EDE3CC] shadow-[0_0_0_3px_var(--ring)] transition-transform group-hover:-translate-y-1 group-hover:rotate-3 sm:size-20"
                         style={{ ["--ring" as string]: p.accent }}

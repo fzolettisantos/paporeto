@@ -150,10 +150,10 @@ export function HomeExperience({
     stored && mine && stored.votingPeriod?.key === mine.week ? { ...stored, myVote: mine.id } : stored;
   const shareText = rankingSlug
     ? rankingShareText(rankingSlug, activeResults)
-    : tab === "personagens"
+    : tab === "bancada"
       ? "Conheça as figuras do Papo Reto e as fichas criminais da resenha!"
       : "As charges do Oberdan no Papo Reto Ranking. Se virou charge, virou história!";
-  const shareTitle = rankingSlug ? RANKINGS[rankingSlug].title : tab === "personagens" ? "Personagens do Papo Reto" : CHARGES_COPY.title;
+  const shareTitle = rankingSlug ? RANKINGS[rankingSlug].title : tab === "bancada" ? "A Bancada do Papo Reto" : CHARGES_COPY.title;
   const leader = activeResults?.entries[0];
 
   return (
@@ -184,7 +184,7 @@ export function HomeExperience({
                 onShareParticipant={(entry) => shareParticipant(rankingSlug, entry)}
                 onRetry={() => void refresh()}
               />
-            ) : tab === "personagens" ? (
+            ) : tab === "bancada" ? (
               <PersonagensGallery />
             ) : (
               <ChargeGallery charges={charges} error={chargesError} notify={notify} />

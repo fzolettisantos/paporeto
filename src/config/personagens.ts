@@ -1,8 +1,8 @@
-/** Aba "Personagens": fichas dos integrantes do Papo Reto. */
+/** Aba "A Bancada" (/bancada): fichas dos integrantes do Papo Reto. */
 
 export const PERSONAGENS_COPY = {
-  slug: "personagens" as const,
-  tabLabel: "Personagens",
+  slug: "bancada" as const,
+  tabLabel: "A Bancada",
   title: "Papo Reto: onde o futebol é sério. O resto, nem tanto.",
   subtitle: "Aqui ninguém está a salvo da zoeira.",
   description:
