@@ -11,6 +11,7 @@ import { BALA_SOURCE } from "@/config/bala-do-veio";
 import { daysUntil } from "@/lib/period";
 import type { RankedEntry, RankingResults, RankingSlug, RankingView } from "@/types";
 import { ChampionsStrip } from "./ChampionsStrip";
+import { PapoLoader } from "./PapoLoader";
 import { PeriodSwitcher } from "./PeriodSwitcher";
 import { shotsLabel } from "./ShotsTable";
 import type { Move } from "./RankingPosition";
@@ -219,11 +220,9 @@ export function RankingBoard({
           </button>
         </div>
       ) : !results ? (
-        <ul className="space-y-3" aria-busy="true" aria-label="Carregando ranking">
-          {[0, 1, 2].map((i) => (
-            <li key={i} className="h-[168px] animate-pulse rounded-2xl border border-line bg-surface" />
-          ))}
-        </ul>
+        <div className="flex min-h-[360px] items-center justify-center rounded-2xl border border-line bg-surface py-10" aria-busy="true">
+          <PapoLoader size="md" label="Carregando o ranking" />
+        </div>
       ) : entries.length === 0 ? (
         <div className="rounded-2xl border border-line bg-surface p-6 text-center">
           <p className="font-bold">{isStatic ? "O Véio ainda está escolhendo o alvo." : "Ainda não tem ninguém escalado neste ranking."}</p>
