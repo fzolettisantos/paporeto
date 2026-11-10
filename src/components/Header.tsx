@@ -22,7 +22,6 @@ export function Header() {
           <span aria-hidden className="h-7 w-px shrink-0 bg-line" />
           <Link href={withBase("/")} className="flex min-w-0 items-center gap-2" aria-label={`${site.name} — início`}>
             <Image src="/brand/papo-reto.png" alt="" width={98} height={52} className="h-8 w-auto shrink-0" preload />
-            <span className="font-display text-[22px] leading-none tracking-wide text-white">RANKING</span>
           </Link>
         </div>
         <a
