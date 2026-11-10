@@ -133,10 +133,7 @@ export function RankingBoard({
         <p className="mt-1.5 max-w-2xl text-[15px] leading-snug text-muted">{copy.description}</p>
         {results && isStatic ? (
           <>
-          <p className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-extrabold text-yellow">
-            <ChartNoAxesColumn aria-hidden className="size-4" /> {BALA_SOURCE}
-          </p>
-          <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] font-semibold text-muted">
+          <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] font-semibold text-muted">
             <span className="inline-flex items-center gap-1">
               <Megaphone aria-hidden className="size-4" /> Quem define é o programa
             </span>
@@ -236,6 +233,12 @@ export function RankingBoard({
             >
               <RefreshCw aria-hidden className="size-4" /> O ranking mudou — atualizar posições
             </button>
+          ) : null}
+          {isStatic ? (
+            // Fonte dos dados do Bala do Véio, em destaque acima do ranking.
+            <p className="mb-3 flex items-center gap-2 font-display text-2xl uppercase leading-none tracking-wide text-yellow sm:text-[28px]">
+              <ChartNoAxesColumn aria-hidden className="size-7 shrink-0" /> {BALA_SOURCE}
+            </p>
           ) : null}
           {isStatic && results.totalShots !== undefined ? (
             // Total de tiros somando todos os participantes, acima dos boxes.
