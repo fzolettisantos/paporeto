@@ -31,7 +31,7 @@ export const site = {
     "Quem fala mais merda? Quem é o mais sábio? Quem vai levar a bronca do Véio? Vote nos rankings mais absurdos da resenha do Papo Reto.",
   tagline: "A resenha é deles. A corneta é sua.",
   disclaimer: "Projeto independente de fãs, sem vínculo oficial com o Canal do Benja.",
-  youtubeUrl: process.env.NEXT_PUBLIC_YOUTUBE_URL || "https://www.youtube.com/@canaldobenja",
+  youtubeUrl: process.env.NEXT_PUBLIC_YOUTUBE_URL || "https://www.youtube.com/@canaldobenjaoficial",
   /** Crédito das caricaturas, exibido quando elas forem usadas com autorização. */
   caricatureCredit: process.env.NEXT_PUBLIC_CARICATURE_CREDIT || "Caricaturas: Oberdan",
   locale: "pt_BR",
