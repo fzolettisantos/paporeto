@@ -13,6 +13,8 @@ import { ShowSchedule } from "./ShowSchedule";
 
 const ILLUSTRATIONS = illustrations as Partial<Record<RankingSlug, { src: string; width: number; height: number }>>;
 const FACES = faces as Record<string, string[]>;
+/** Cor da borda de cada arte: a caixa usa a mesma, para a imagem centralizada não "aparecer" como um retângulo. */
+const ART_BG: Record<RankingSlug, string> = { "falou-merda": "#09090b", sabio: "#0a0c10", "bala-do-veio": "#0a0c10" };
 const RANK_ICONS = { "falou-merda": Megaphone, sabio: Brain, "bala-do-veio": Target } as const;
 
 /** Página inicial: horário do programa, atalhos para os rankings, personagens e charges. */
@@ -66,13 +68,14 @@ export function IndexPage() {
                       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-[transform,border-color] hover:-translate-y-1 hover:border-yellow"
                     >
                       {art ? (
-                        <div className="relative aspect-[4/3] overflow-hidden bg-bg">
+                        // A arte inteira, centralizada (troféus são quadrados; a do Véio é 3:2).
+                        <div className="relative aspect-[4/3] overflow-hidden" style={{ backgroundColor: ART_BG[slug] }}>
                           <Image
                             src={art.src}
                             alt=""
                             fill
                             sizes="(min-width: 640px) 33vw, 100vw"
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="object-contain object-center transition-transform duration-500 group-hover:scale-105"
                           />
                         </div>
                       ) : null}
