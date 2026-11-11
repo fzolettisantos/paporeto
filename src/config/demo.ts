@@ -29,7 +29,7 @@ export const PAPO_RETO_CAST: Participant[] = [
       ["mastigasamba", "Mastigasamba", null],
       ["bruno-di-santi", "Bruno Di Santi", null],
       ["nem", "Nem", null],
-      ["douglas-dias", "Douglas Dias", null],
+      ["grafiteiro", "O Grafiteiro", "que fizer o escudo do Palmeiras no muro do Véio"],
     ] as const
   ).map(
     ([slug, name, nickname], i): Participant => ({

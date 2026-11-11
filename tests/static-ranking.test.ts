@@ -29,12 +29,12 @@ describe("Bala do Véio é estático", () => {
     const shots = results!.shots!;
     const perPerson = Object.values(shots).map((list) => list.reduce((t, s) => t + s.quantity, 0));
     expect(results!.totalShots).toBe(perPerson.reduce((a, b) => a + b, 0));
-    expect(shotsTotal(shots.serdan!)).toBe(12);
-    expect(shotsTotal(shots.kleber!)).toBe(12);
-    expect(results!.totalShots).toBe(48);
+    expect(shotsTotal(shots.serdan!)).toBe(19);
+    expect(shotsTotal(shots.kleber!)).toBe(20);
+    expect(results!.totalShots).toBe(72);
     expect(shotsLabel(1)).toBe("1 tiro");
-    expect(formatEvidence(shots["veio-tricolor"]![0]!)).toBe("EP 629 · 1:08:12");
-    expect(formatEvidence(shots.nem![0]!)).toBe("EP 360");
+    expect(formatEvidence(shots["veio-tricolor"]![3]!)).toBe("EP 629 · 1:08:12");
+    expect(formatEvidence(shots.nem![0]!)).toBeNull();
     expect(formatEvidence(shots.serdan![0]!)).toBeNull();
     expect(shotsLabel(1234)).toBe("1.234 tiros");
   });
@@ -96,17 +96,18 @@ describe("participante só em alguns rankings", () => {
     const has = (r: typeof fm, id: string) => r!.entries.some((e) => e.participant.id === id);
     expect(has(bala, "serdan")).toBe(true);
     expect(has(fm, "serdan")).toBe(false);
-    expect(has(sabio, "douglas-dias")).toBe(false);
+    expect(has(sabio, "grafiteiro")).toBe(false);
+    expect(has(bala, "grafiteiro")).toBe(true);
+    expect(has(bala, "douglas-dias")).toBe(false);
     expect(has(bala, "veio-tricolor")).toBe(true);
   });
 
   it("Bala do Véio segue o total de tiros", async () => {
     const [bala] = await getRankingResults(["bala-do-veio"]);
     const at = (id: string) => bala!.entries.find((e) => e.participant.id === id)!;
-    expect(bala!.entries.slice(0, 2).map((e) => e.participant.id).sort()).toEqual(["kleber", "serdan"]);
-    expect(at("serdan")).toMatchObject({ position: 1, state: "top" });
-    expect(at("kleber").position).toBe(1);
-    expect(at("kleber").tied).toBe(true);
+    expect(bala!.entries.slice(0, 2).map((e) => e.participant.id)).toEqual(["kleber", "serdan"]);
+    expect(at("kleber")).toMatchObject({ position: 1, state: "top", tied: false });
+    expect(at("serdan").position).toBe(2);
     expect(at("benja").state).toBe("bottom"); // sem tiros: escapou
   });
 });

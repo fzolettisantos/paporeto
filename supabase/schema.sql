@@ -309,35 +309,43 @@ insert into public.participants (slug, name, nickname, sort_order, rankings) val
   ('mastigasamba', 'Mastigasamba', null, 13, array['bala-do-veio']),
   ('bruno-di-santi', 'Bruno Di Santi', null, 14, array['bala-do-veio']),
   ('nem', 'Nem', null, 15, array['bala-do-veio']),
-  ('douglas-dias', 'Douglas Dias', null, 16, array['bala-do-veio'])
+  ('grafiteiro', 'O Grafiteiro', 'que fizer o escudo do Palmeiras no muro do Véio', 16, array['bala-do-veio'])
 on conflict (slug) do nothing;
 
--- Tiros do Bala do Véio — dados do programa (Caique), atualização de 09/11.
+-- Tiros do Bala do Véio — dados do programa (Caique), atualização de 11/11 (72 tiros).
 -- Só é carregado se o ranking ainda não tiver tiros (rodar o arquivo de novo não duplica).
 do $$
 declare v_ranking uuid;
 begin
   select id into v_ranking from public.rankings where slug = 'bala-do-veio';
   if v_ranking is null or exists (select 1 from public.static_shots where ranking_id = v_ranking) then return; end if;
-  insert into public.static_shots (ranking_id, participant_id, quantity, location, place, note, episode, episode_time, created_at)
-  select v_ranking, p.id, d.quantity, d.location, d.place, d.note, d.episode, d.episode_time, now() + make_interval(secs => d.n)
+  insert into public.static_shots (ranking_id, participant_id, quantity, location, note, episode, episode_time, created_at)
+  select v_ranking, p.id, d.quantity, d.location, d.note, d.episode, d.episode_time, now() + make_interval(secs => d.n)
   from (values
-    (1, 'serdan', 12, 'Na testa', null, null, null::int, null),
-    (2, 'gadu', 7, 'Local não pré-definido', null, null, null, null),
-    (3, 'carabina', 1, 'Na cara', null, null, null, null),
-    (4, 'oberdan', 1, 'Local não pré-definido', null, null, null, null),
-    (5, 'mano', 1, 'Na cara', null, 'Porque falou da Dona Bila', null, null),
-    (6, 'lucas-samuel', 1, null, null, null, null, null),
-    (7, 'dentinho', 1, null, null, null, null, null),
-    (8, 'luiz-gusttavo', 1, 'Na testa', null, null, null, null),
-    (9, 'mastigasamba', 1, null, null, '“Foda-se o Mastigasamba”', null, null),
-    (10, 'bruno-di-santi', 1, null, null, 'Ameaça feita nas entrelinhas + combo de deixar ele amarrado numa árvore 3 dias', null, null),
-    (11, 'kleber', 10, null, null, null, null, null),
-    (12, 'kleber', 2, 'Na perna', null, 'Última atualização (09/11)', null, null),
-    (13, 'nem', 1, 'Na boca', null, null, 360, null),
-    (14, 'douglas-dias', 7, null, null, 'Pediu pra um grafiteiro fazer o escudo do Palmeiras no muro da casa do Véio', null, null),
-    (15, 'veio-tricolor', 1, 'Na cabeça (nele mesmo)', null,
-      '“Se eu apanhar de um gordinho desse (Carabina) eu dou um tiro na minha cabeça”', 629, '1:08:12')
-  ) as d(n, slug, quantity, location, place, note, episode, episode_time)
+    (1, 'kleber', 11, 'Local não definido', '+ ameaça com faca', null::int, null),
+    (2, 'kleber', 2, 'Na perna', null, null::int, null),
+    (3, 'kleber', 4, 'Na testa', null, null::int, null),
+    (4, 'kleber', 3, 'Na cabeça', null, null::int, null),
+    (5, 'serdan', 18, 'Local não definido', null, null::int, null),
+    (6, 'serdan', 1, 'Na cara', null, null::int, null),
+    (7, 'gadu', 7, 'Na cara', null, null::int, null),
+    (8, 'grafiteiro', 7, 'Local não definido', 'Se fizer o símbolo do Palmeiras no muro da casa do Véio', null::int, null),
+    (9, 'mano', 2, 'Na testa', null, null::int, null),
+    (10, 'mano', 2, 'Na cara', null, null::int, null),
+    (11, 'mano', 1, 'Local não definido', null, null::int, null),
+    (12, 'veio-tricolor', 1, 'Na própria cabeça', 'Se apanhar do Mano e do Kleber', null::int, null),
+    (13, 'veio-tricolor', 1, 'No próprio ouvido', 'Se pichar o muro do XV', null::int, null),
+    (14, 'veio-tricolor', 1, 'No próprio ouvido', 'Se apanhar do Kleber', null::int, null),
+    (15, 'veio-tricolor', 1, 'Na própria cabeça', 'Se apanhar do Caravina', 629, '1:08:12'),
+    (16, 'veio-tricolor', 1, 'Na própria cabeça', 'Se perder pra alguém do programa na disputa de quem tem o maior QI', null::int, null),
+    (17, 'nem', 2, 'Na testa', null, null::int, null),
+    (18, 'luiz-gusttavo', 1, 'Na testa', null, null::int, null),
+    (19, 'carabina', 1, 'Na testa', null, null::int, null),
+    (20, 'mastigasamba', 1, 'Local não definido', '“Foda-se o Mastigasamba”', null::int, null),
+    (21, 'bruno-di-santi', 1, 'Local não definido', '+ ameaça de pendurar 3 dias numa árvore', null::int, null),
+    (22, 'oberdan', 1, 'Local não definido', null, null::int, null),
+    (23, 'lucas-samuel', 1, 'Local não definido', null, null::int, null),
+    (24, 'dentinho', 1, null, null, null::int, null)
+  ) as d(n, slug, quantity, location, note, episode, episode_time)
   join public.participants p on p.slug = d.slug;
 end $$;

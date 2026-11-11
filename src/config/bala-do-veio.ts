@@ -1,12 +1,12 @@
 import type { BalaShot } from "@/types";
 
 /**
- * BALA DO VÉIO — dados do programa (informados pelo Caique). Atualização de 09/11.
+ * BALA DO VÉIO — dados do programa (informados pelo Caique). Atualização de 11/11 (72 tiros).
  * Sem Supabase, o site mostra estes dados; com Supabase, a mesma lista é a carga inicial do banco
  * (supabase/papo-reto.sql) e as próximas atualizações são feitas pelo painel.
  * A ordem do ranking segue o total de tiros de cada um.
  */
-export const BALA_UPDATED_AT = "2026-11-09T12:00:00-03:00";
+export const BALA_UPDATED_AT = "2026-11-11T15:04:00-03:00";
 
 /** Fonte dos dados, exibida no topo da aba. */
 export const BALA_SOURCE = "Data Caique informa";
@@ -28,32 +28,56 @@ const shot = (
 });
 
 export const BALA_SHOTS: Record<string, BalaShot[]> = {
-  serdan: [shot("serdan-1", 12, "Na testa")],
-  gadu: [shot("gadu-1", 7, "Local não pré-definido")],
-  carabina: [shot("carabina-1", 1, "Na cara")],
-  oberdan: [shot("oberdan-1", 1, "Local não pré-definido")],
-  mano: [shot("mano-1", 1, "Na cara", { note: "Porque falou da Dona Bila" })],
-  "lucas-samuel": [shot("lucas-samuel-1", 1, null)],
-  dentinho: [shot("dentinho-1", 1, null)],
-  "luiz-gusttavo": [shot("luiz-gusttavo-1", 1, "Na testa")],
-  mastigasamba: [shot("mastigasamba-1", 1, null, { note: "“Foda-se o Mastigasamba”" })],
-  "bruno-di-santi": [
-    shot("bruno-di-santi-1", 1, null, {
-      note: "Ameaça feita nas entrelinhas + combo de deixar ele amarrado numa árvore 3 dias",
-    }),
+  kleber: [
+    shot("kleber-1", 11, "Local não definido", { note: "+ ameaça com faca" }),
+    shot("kleber-2", 2, "Na perna"),
+    shot("kleber-3", 4, "Na testa"),
+    shot("kleber-4", 3, "Na cabeça"),
   ],
-  kleber: [shot("kleber-1", 10, null), shot("kleber-2", 2, "Na perna", { note: "Última atualização (09/11)" })],
-  nem: [shot("nem-1", 1, "Na boca", { episode: 360 })],
-  "douglas-dias": [
-    shot("douglas-dias-1", 7, null, {
-      note: "Pediu pra um grafiteiro fazer o escudo do Palmeiras no muro da casa do Véio",
-    }),
+  serdan: [
+    shot("serdan-1", 18, "Local não definido"),
+    shot("serdan-2", 1, "Na cara"),
+  ],
+  gadu: [
+    shot("gadu-1", 7, "Na cara"),
+  ],
+  grafiteiro: [
+    shot("grafiteiro-1", 7, "Local não definido", { note: "Se fizer o símbolo do Palmeiras no muro da casa do Véio" }),
+  ],
+  mano: [
+    shot("mano-1", 2, "Na testa"),
+    shot("mano-2", 2, "Na cara"),
+    shot("mano-3", 1, "Local não definido"),
   ],
   "veio-tricolor": [
-    shot("veio-tricolor-1", 1, "Na cabeça (nele mesmo)", {
-      episode: 629,
-      time: "1:08:12",
-      note: "“Se eu apanhar de um gordinho desse (Carabina) eu dou um tiro na minha cabeça”",
-    }),
+    shot("veio-tricolor-1", 1, "Na própria cabeça", { note: "Se apanhar do Mano e do Kleber" }),
+    shot("veio-tricolor-2", 1, "No próprio ouvido", { note: "Se pichar o muro do XV" }),
+    shot("veio-tricolor-3", 1, "No próprio ouvido", { note: "Se apanhar do Kleber" }),
+    shot("veio-tricolor-4", 1, "Na própria cabeça", { note: "Se apanhar do Caravina", episode: 629, time: "1:08:12" }),
+    shot("veio-tricolor-5", 1, "Na própria cabeça", { note: "Se perder pra alguém do programa na disputa de quem tem o maior QI" }),
+  ],
+  nem: [
+    shot("nem-1", 2, "Na testa"),
+  ],
+  "luiz-gusttavo": [
+    shot("luiz-gusttavo-1", 1, "Na testa"),
+  ],
+  carabina: [
+    shot("carabina-1", 1, "Na testa"),
+  ],
+  mastigasamba: [
+    shot("mastigasamba-1", 1, "Local não definido", { note: "“Foda-se o Mastigasamba”" }),
+  ],
+  "bruno-di-santi": [
+    shot("bruno-di-santi-1", 1, "Local não definido", { note: "+ ameaça de pendurar 3 dias numa árvore" }),
+  ],
+  oberdan: [
+    shot("oberdan-1", 1, "Local não definido"),
+  ],
+  "lucas-samuel": [
+    shot("lucas-samuel-1", 1, "Local não definido"),
+  ],
+  dentinho: [
+    shot("dentinho-1", 1, null),
   ],
 };
