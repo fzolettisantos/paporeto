@@ -13,8 +13,8 @@ export function publisherLd() {
     "@type": "Organization",
     "@id": PUBLISHER_ID,
     name: "Fiapo de Manga Studio",
-    url: "https://www.instagram.com/francisco.zoletti/",
-    sameAs: ["https://www.instagram.com/francisco.zoletti/"],
+    url: "https://www.instagram.com/fiapodemangastudio/",
+    sameAs: ["https://www.instagram.com/fiapodemangastudio/"],
   };
 }
 

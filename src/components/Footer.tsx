@@ -39,12 +39,12 @@ export function Footer({ showCaricatureCredit }: { showCaricatureCredit: boolean
           Feito por <strong className="text-white">Fiapo de Manga Studio</strong>
           <span aria-hidden>·</span>
           <a
-            href="https://www.instagram.com/francisco.zoletti/"
+            href="https://www.instagram.com/fiapodemangastudio/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-h-11 items-center gap-1.5 font-bold text-white transition-colors hover:text-yellow"
           >
-            <InstagramIcon className="size-4" />@francisco.zoletti
+            <InstagramIcon className="size-4" />@fiapodemangastudio
             <span className="sr-only"> no Instagram (abre em nova aba)</span>
           </a>
         </p>
