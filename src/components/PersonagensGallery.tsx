@@ -270,10 +270,11 @@ export function PersonagensGallery() {
     <div>
       <header className="mb-5">
         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-yellow">Elenco · fichas da resenha</p>
-        <h1 id="title-bancada" className="mt-1 font-display text-[32px] uppercase leading-none sm:text-5xl">
-          {PERSONAGENS_COPY.title}
+        <h1 id="title-bancada" className="mt-1 font-display text-[40px] uppercase leading-none sm:text-6xl">
+          {PERSONAGENS_COPY.tabLabel}
         </h1>
-        <p className="mt-2 text-lg font-bold leading-snug text-yellow">{PERSONAGENS_COPY.subtitle}</p>
+        <p className="mt-2 text-lg font-bold leading-snug text-yellow">{PERSONAGENS_COPY.title}</p>
+        <p className="mt-1 text-[15px] font-semibold leading-snug text-white">{PERSONAGENS_COPY.subtitle}</p>
         <p className="mt-1.5 max-w-3xl text-[15px] leading-snug text-muted">{PERSONAGENS_COPY.description}</p>
         <p className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-muted">
           <RefreshCw aria-hidden className="size-4 text-yellow" /> Toque na caricatura para mudar a cara.

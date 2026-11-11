@@ -3,7 +3,6 @@ import manifest from "@/generated/character-manifest.json";
 import type { Charge, RankingResults, TabSlug } from "@/types";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
-import { Hero } from "./Hero";
 import { HomeExperience } from "./HomeExperience";
 import { JsonLd } from "./JsonLd";
 import { PERSONAGENS, PERSONAGENS_COPY } from "@/config/personagens";
@@ -80,7 +79,6 @@ export async function HomePage({ initialTab }: { initialTab: TabSlug }) {
         </p>
       ) : null}
       <main id="conteudo">
-        <Hero />
         <HomeExperience
           initialTab={initialTab}
           initialResults={results}
