@@ -4,6 +4,15 @@
 -- por esta lista (rodar de novo não duplica: apaga e recarrega a mesma lista).
 -- =====================================================================
 
+-- Garante os campos usados abaixo (bancos criados antes deles existirem).
+alter table public.participants add column if not exists rankings text[];
+alter table public.static_shots add column if not exists place text;
+alter table public.static_shots add column if not exists note text;
+alter table public.static_shots add column if not exists episode integer;
+alter table public.static_shots add column if not exists episode_time text;
+alter table public.static_shots alter column location drop not null;
+alter table public.static_shots alter column weapon drop not null;
+
 -- O grafiteiro entra no ranking; Douglas Dias sai (a correção mudou o alvo dos 7 tiros).
 insert into public.participants (slug, name, nickname, sort_order, rankings)
 values ('grafiteiro', 'O Grafiteiro', 'que fizer o escudo do Palmeiras no muro do Véio', 17, array['bala-do-veio'])
