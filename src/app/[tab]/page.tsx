@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { HomePage } from "@/components/HomePage";
-import { tabCopy } from "@/config/rankings";
-import { site, withBase } from "@/config/site";
+import { TAB_SEO } from "@/config/seo";
+import { withBase } from "@/config/site";
 import { isTabSlug } from "@/lib/validation";
 import { TAB_SLUGS } from "@/types";
 
@@ -20,14 +20,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ tab: string }> }): Promise<Metadata> {
   const { tab } = await params;
   if (!isTabSlug(tab)) return {};
-  const copy = tabCopy(tab);
-  const description = `${copy.subtitle} ${copy.description}`;
+  const { title, description, keywords } = TAB_SEO[tab];
   return {
-    title: copy.title,
+    title: { absolute: title },
     description,
+    keywords,
     alternates: { canonical: withBase(`/${tab}`) },
-    openGraph: { title: `${copy.title} | ${site.name}`, description, url: withBase(`/${tab}`) },
-    twitter: { title: `${copy.title} | ${site.name}`, description },
+    openGraph: { title, description, url: withBase(`/${tab}`) },
+    twitter: { title, description },
   };
 }
 

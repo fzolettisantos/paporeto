@@ -4,11 +4,11 @@ import { site } from "@/config/site";
 /** Hero compacto: no celular, a navegação e o começo do ranking aparecem na primeira tela. */
 export function Hero() {
   return (
-    <section aria-labelledby="hero-title" className="bg-stands">
+    <section aria-label="Apresentação" className="bg-stands">
       <div className="mx-auto max-w-5xl px-4 pb-4 pt-5 sm:pb-8 sm:pt-10">
-        <h1 id="hero-title" className="font-display text-[30px] uppercase leading-[1.04] sm:text-5xl lg:max-w-3xl lg:text-6xl">
+        <p id="hero-title" className="font-display text-[30px] uppercase leading-[1.04] sm:text-5xl lg:max-w-3xl lg:text-6xl">
           Aqui a resenha entra em campo. <span className="text-yellow">E o bom senso fica no banco.</span>
-        </h1>
+        </p>
         <p className="mt-2.5 max-w-2xl text-[15px] leading-snug text-muted sm:mt-4 sm:text-lg">
           Futebol raiz, corneta sem VAR, opiniões duvidosas e muita resenha.
           <span className="hidden sm:inline">

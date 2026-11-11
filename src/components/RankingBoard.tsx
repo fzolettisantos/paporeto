@@ -108,7 +108,7 @@ export function RankingBoard({
 
   const entries = displayed ?? live ?? [];
   const pendingReorder = Boolean(live && shown && !sameStanding(shown, live));
-  const accent = copy.kind === "positive" ? "text-green" : "text-red";
+  const accent = copy.kind === "positive" ? "text-green" : "text-[#ff7a6e]";
   const isStatic = copy.mode === "static";
   const illustration = (illustrations as Partial<Record<RankingSlug, { src: string; width: number; height: number }>>)[slug];
   const wideIllustration = illustration ? illustration.width > illustration.height * 1.2 : false;
@@ -126,9 +126,9 @@ export function RankingBoard({
             <p className={`text-xs font-extrabold uppercase tracking-[0.18em] ${accent}`}>
               {kicker}
             </p>
-            <h2 id={`title-${slug}`} className="mt-1 font-display text-[34px] uppercase leading-none sm:text-5xl lg:text-6xl">
+            <h1 id={`title-${slug}`} className="mt-1 font-display text-[34px] uppercase leading-none sm:text-5xl lg:text-6xl">
               {copy.title}
-            </h2>
+            </h1>
             <p className="mt-1.5 text-lg font-bold leading-snug text-yellow">{copy.subtitle}</p>
           </div>
         </div>

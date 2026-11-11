@@ -142,9 +142,9 @@ function PersonagemCard({ personagem, index, linked }: { personagem: Personagem;
             <FaceSwitcher personagem={personagem} big={open} />
           </motion.div>
           <motion.div layout="position" className="min-w-0 flex-1">
-            <h3 id={`${detailsId}-name`} className="font-display text-[28px] uppercase leading-none">
+            <h2 id={`${detailsId}-name`} className="font-display text-[28px] uppercase leading-none">
               {personagem.name}
-            </h3>
+            </h2>
             <p className="mt-1 font-display text-lg uppercase leading-tight text-yellow">{personagem.nickname}</p>
             <p className="mt-1.5 text-[13px] font-semibold leading-snug text-muted">
               {personagem.realName} • {personagem.role}
@@ -160,6 +160,12 @@ function PersonagemCard({ personagem, index, linked }: { personagem: Personagem;
                 <span className="sr-only"> no Instagram (abre em nova aba)</span>
               </a>
             ) : null}
+            <a
+              href={`/bancada/${personagem.pageSlug}`}
+              className="ml-2 mt-2 inline-flex min-h-9 items-center text-[13px] font-bold text-yellow underline-offset-4 hover:underline"
+            >
+              Página de {personagem.name}
+            </a>
             <blockquote className="relative mt-3 rounded-xl bg-bg/60 px-3 py-2.5 text-[15px] font-semibold italic leading-snug">
               <span aria-hidden className="absolute -top-3 left-2 font-display text-4xl not-italic leading-none text-yellow">
                 “
@@ -193,7 +199,7 @@ function PersonagemCard({ personagem, index, linked }: { personagem: Personagem;
                   >
                     Fichado
                   </motion.span>
-                  <h4 className="font-display text-xl uppercase leading-none">Ficha criminal da resenha</h4>
+                  <h3 className="font-display text-xl uppercase leading-none">Ficha criminal da resenha</h3>
 
                   <dl className="mt-3 grid gap-3 sm:grid-cols-3">
                     {FIELDS.map(({ key, label, Icon }, i) => (
@@ -222,7 +228,7 @@ function PersonagemCard({ personagem, index, linked }: { personagem: Personagem;
                     transition={{ delay: 0.45 }}
                     className="mt-4 rounded-lg border-l-4 border-red bg-red/10 p-3"
                   >
-                    <p className="flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em] text-red">
+                    <p className="flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#ff7a6e]">
                       <Stethoscope aria-hidden className="size-4" /> Diagnóstico
                     </p>
                     <p className="mt-1 text-[15px] font-semibold leading-snug">{personagem.diagnostico}</p>
@@ -264,9 +270,9 @@ export function PersonagensGallery() {
     <div>
       <header className="mb-5">
         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-yellow">Elenco · fichas da resenha</p>
-        <h2 id="title-bancada" className="mt-1 font-display text-[32px] uppercase leading-none sm:text-5xl">
+        <h1 id="title-bancada" className="mt-1 font-display text-[32px] uppercase leading-none sm:text-5xl">
           {PERSONAGENS_COPY.title}
-        </h2>
+        </h1>
         <p className="mt-2 text-lg font-bold leading-snug text-yellow">{PERSONAGENS_COPY.subtitle}</p>
         <p className="mt-1.5 max-w-3xl text-[15px] leading-snug text-muted">{PERSONAGENS_COPY.description}</p>
         <p className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-muted">

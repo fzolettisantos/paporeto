@@ -79,7 +79,7 @@ export function ShowSchedule() {
                       ? "border-yellow bg-yellow/15 text-white"
                       : showDay
                         ? "border-line bg-bg text-white"
-                        : "border-transparent bg-bg/40 text-muted/60"
+                        : "border-transparent bg-bg/40 text-muted"
                 }`}
               >
                 <span className="text-[12px] font-extrabold uppercase">{day}</span>

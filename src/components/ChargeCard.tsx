@@ -48,7 +48,7 @@ export function ChargeCard({ charge, eager, onOpen, onShare }: { charge: Charge;
         </span>
       </button>
       <div className="p-3">
-        <h3 className="font-display text-xl uppercase leading-tight">{charge.title}</h3>
+        <h2 className="font-display text-xl uppercase leading-tight">{charge.title}</h2>
         <p className="mt-0.5 text-sm text-muted">
           <time dateTime={charge.publishedOn}>{formatChargeDate(charge.publishedOn)}</time> · {charge.credits}
         </p>

@@ -9,7 +9,12 @@ import { site, withBase } from "@/config/site";
 import type { RankingSlug } from "@/types";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { HomeFaq, FAQ } from "./HomeFaq";
+import { JsonLd } from "./JsonLd";
 import { ShowSchedule } from "./ShowSchedule";
+import { HOME_SEO } from "@/config/seo";
+import { absoluteUrl } from "@/config/site";
+import { graph, personLd, publisherLd, showLd, websiteLd, WEBSITE_ID } from "@/lib/structured-data";
 
 const ILLUSTRATIONS = illustrations as Partial<Record<RankingSlug, { src: string; width: number; height: number }>>;
 const FACES = faces as Record<string, string[]>;
@@ -19,10 +24,32 @@ const RANK_ICONS = { "falou-merda": Megaphone, sabio: Brain, "bala-do-veio": Tar
 
 /** Página inicial: horário do programa, atalhos para os rankings, personagens e charges. */
 export function IndexPage() {
+  const ld = graph(
+    websiteLd(),
+    publisherLd(),
+    showLd(),
+    ...PERSONAGENS.map(personLd),
+    {
+      "@type": "WebPage",
+      "@id": absoluteUrl("/#pagina"),
+      url: absoluteUrl("/"),
+      name: HOME_SEO.title,
+      description: HOME_SEO.description,
+      inLanguage: "pt-BR",
+      isPartOf: { "@id": WEBSITE_ID },
+    },
+    {
+      "@type": "FAQPage",
+      "@id": absoluteUrl("/#perguntas"),
+      mainEntity: FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+    },
+  );
+
   return (
     <>
+      <JsonLd data={ld} />
       <Header />
-      <main>
+      <main id="conteudo">
         <section className="bg-stands">
           <div className="mx-auto max-w-5xl px-4 pb-6 pt-7 sm:pb-10 sm:pt-12">
             <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-yellow">Papo Reto Ranking</p>
@@ -57,7 +84,7 @@ export function IndexPage() {
               Os rankings da resenha
             </h2>
             <ul className="mt-4 grid gap-4 sm:grid-cols-3">
-              {(Object.keys(RANKINGS) as RankingSlug[]).map((slug) => {
+              {(Object.keys(RANKINGS) as RankingSlug[]).map((slug, index) => {
                 const copy = RANKINGS[slug];
                 const art = ILLUSTRATIONS[slug];
                 const Icon = RANK_ICONS[slug];
@@ -75,12 +102,15 @@ export function IndexPage() {
                             alt=""
                             fill
                             sizes="(min-width: 640px) 33vw, 100vw"
+                            // A primeira arte é o maior elemento da primeira tela (LCP): carrega com prioridade.
+                            preload={index === 0}
+                            loading={index === 0 ? "eager" : "lazy"}
                             className={`object-contain transition-transform ${art.width > art.height ? "object-bottom" : "object-center"} duration-500 group-hover:scale-105`}
                           />
                         </div>
                       ) : null}
                       <div className="flex flex-1 flex-col p-4">
-                        <p className={`flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.16em] ${copy.kind === "positive" ? "text-green" : "text-red"}`}>
+                        <p className={`flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.16em] ${copy.kind === "positive" ? "text-green" : "text-[#ff7a6e]"}`}>
                           <Icon aria-hidden className="size-4" />
                           {copy.mode === "static" ? "Ranking do programa" : "Vote todo dia"}
                         </p>
@@ -135,6 +165,27 @@ export function IndexPage() {
               })}
             </ul>
           </section>
+
+          <section aria-labelledby="sobre-title" className="rounded-3xl border border-line bg-surface p-5 sm:p-7">
+            <h2 id="sobre-title" className="font-display text-[28px] uppercase leading-none sm:text-4xl">O que é o Papo Reto?</h2>
+            <p className="mt-3 max-w-3xl text-[16px] leading-relaxed text-white/90">
+              O <strong>Papo Reto</strong> é o programa de resenha de futebol do <strong>Canal do Benja</strong>, apresentado por{" "}
+              <strong>Benjamin Back</strong> e transmitido ao vivo no YouTube de segunda a sexta, das 12h às 14h. Na bancada,{" "}
+              {PERSONAGENS.filter((p) => p.slug !== "benja").map((p, i, all) => (
+                <span key={p.slug}>
+                  <Link href={withBase(`/bancada/${p.pageSlug}`)} className="font-bold text-yellow hover:underline">{p.name}</Link>
+                  {i < all.length - 2 ? ", " : i === all.length - 2 ? " e " : ""}
+                </span>
+              ))}{" "}
+              transformam qualquer discussão sobre futebol em um verdadeiro hospício esportivo.
+            </p>
+            <p className="mt-3 max-w-3xl text-[16px] leading-relaxed text-muted">
+              No Papo Reto Ranking, o público vota todo dia em quem mais falou besteira (Troféu Falou Merda) e em quem foi o
+              mais sensato (O Sábio da Resenha), acompanha quem vai levar Bala do Véio e conhece a ficha de cada integrante.
+            </p>
+          </section>
+
+          <HomeFaq />
 
           <section aria-labelledby="charges-title">
             <Link

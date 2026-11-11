@@ -29,11 +29,17 @@ export interface Personagem {
   accent: string;
   /** Usuário do Instagram (sem @). */
   instagram?: string;
+  /** Endereço da página do personagem: /bancada/<pageSlug>. */
+  pageSlug: string;
+  /** Nome usado nos dados estruturados (Google). */
+  fullName: string;
 }
 
 export const PERSONAGENS: Personagem[] = [
   {
     slug: "benja",
+    fullName: "Benjamin Back",
+    pageSlug: "benja",
     instagram: "benjaminbackoficial",
     name: "Benja",
     nickname: "O Silvio Santos da mídia esportiva",
@@ -51,6 +57,8 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     slug: "mano",
+    fullName: "Maurício Borges",
+    pageSlug: "mano",
     instagram: "mauricioborgesmano",
     name: "Mano",
     nickname: "Sábio",
@@ -68,6 +76,8 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     slug: "kleber",
+    fullName: "Kléber Gladiador",
+    pageSlug: "kleber-gladiador",
     instagram: "klebergiacomazzi30",
     name: "Kléber Gladiador",
     nickname: "Monstro do Palestra",
@@ -85,6 +95,8 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     slug: "veio-tricolor",
+    fullName: "Silvio Albertin Junior",
+    pageSlug: "veio-fanatico-tricolor",
     instagram: "silvioalbertinjunior",
     name: "Véio Fanático Tricolor",
     nickname: "O terror da berinjela",
@@ -102,6 +114,8 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     slug: "joneta",
+    fullName: "Jonas Orlando",
+    pageSlug: "joneta",
     instagram: "jonasorlando",
     name: "Joneta",
     nickname: "Dedeta",
@@ -119,6 +133,8 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     slug: "carabina",
+    fullName: "Paulo Caravina",
+    pageSlug: "carabina",
     instagram: "soudoapito",
     name: "Carabina",
     nickname: "Mestre das regras (respeita o Carabas)",
@@ -136,6 +152,8 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     slug: "gadu",
+    fullName: "Caique Silva",
+    pageSlug: "caique-silva",
     instagram: "silvapcaique",
     name: "Caique Silva",
     nickname: "O Gadu Boyceta",
@@ -161,3 +179,7 @@ export const RISCO_LABEL: Record<Personagem["risco"], string> = {
   5: "Altíssimo",
   6: "Incalculável",
 };
+
+export function findPersonagemByPage(pageSlug: string) {
+  return PERSONAGENS.find((p) => p.pageSlug === pageSlug) ?? null;
+}

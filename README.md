@@ -242,6 +242,19 @@ sem copiar a imagem para o site. Há também um botão para o perfil dele.
 
 Mostrar o perfil inteiro sozinho exigiria que o Oberdan autorizasse o site na conta dele (API oficial da Meta).
 
+## SEO
+
+- **Títulos e descrições** de cada página em `src/config/seo.ts` (até ~60 e ~155 caracteres), com as palavras que as
+  pessoas buscam (Papo Reto, Canal do Benja, Benjamin Back, nomes dos integrantes, horário do programa).
+- **Uma página por integrante** (`/bancada/<nome>`), com bio e ficha em texto, imagem de compartilhamento própria e
+  dados de pessoa (com o Instagram). A aba A Bancada liga para cada uma.
+- **Dados estruturados (JSON-LD):** site, quem publica, o programa (TVSeries, com o horário e a bancada), pessoas,
+  perguntas frequentes (FAQPage), trilhas (BreadcrumbList) e listas de classificação.
+- **Página inicial** com "O que é o Papo Reto?" e perguntas frequentes (horário, integrantes, votação).
+- **1 H1 por página**, sitemap com as imagens, robots, canonical com `www`, 404 própria, painel e API com `noindex`.
+- **Google Search Console:** cadastre o código de verificação em `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` e envie o
+  sitemap (`/sitemap.xml`).
+
 ## Compartilhamento
 
 - URLs por aba: `/falou-merda`, `/sabio`, `/bala-do-veio`, `/charges` (abrem a mesma experiência já na aba).

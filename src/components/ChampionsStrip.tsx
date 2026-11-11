@@ -14,9 +14,9 @@ export function ChampionsStrip({ slug, champions, view }: { slug: RankingSlug; c
   const copy = RANKINGS[slug];
   return (
     <section aria-labelledby={`champions-${slug}`} className="mb-4 rounded-2xl border border-yellow/40 bg-gradient-to-br from-yellow/10 to-surface p-3 sm:p-4">
-      <h3 id={`champions-${slug}`} className="flex items-center gap-2 font-display text-xl uppercase leading-none text-yellow">
+      <h2 id={`champions-${slug}`} className="flex items-center gap-2 font-display text-xl uppercase leading-none text-yellow">
         <Crown aria-hidden className="size-5" /> Últimos campeões
-      </h3>
+      </h2>
       <p className="mt-1 text-[12px] font-semibold text-muted">{copy.badges.top} de cada período encerrado.</p>
       <ul className="mt-3 grid grid-cols-3 gap-2">
         {champions.map((c) => {

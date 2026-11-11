@@ -47,9 +47,9 @@ export function ChargeGallery({ charges, error, notify }: { charges: Charge[]; e
     <div>
       <header className="mb-4">
         <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-yellow">Galeria</p>
-        <h2 id="title-charges" className="mt-1 font-display text-[34px] uppercase leading-none sm:text-5xl">
+        <h1 id="title-charges" className="mt-1 font-display text-[34px] uppercase leading-none sm:text-5xl">
           {CHARGES_COPY.title}
-        </h2>
+        </h1>
         <p className="mt-1.5 text-lg font-bold leading-snug text-yellow">{CHARGES_COPY.subtitle}</p>
         <p className="mt-1.5 max-w-2xl text-[15px] leading-snug text-muted">{CHARGES_COPY.description}</p>
         <div className="mt-3 flex flex-wrap gap-2">
