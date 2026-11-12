@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { site } from "@/config/site";
-import { InstagramIcon } from "./InstagramIcon";
 
 export function Footer({ showCaricatureCredit }: { showCaricatureCredit: boolean }) {
   return (
@@ -45,16 +44,6 @@ export function Footer({ showCaricatureCredit }: { showCaricatureCredit: boolean
           >
             Fiapo de Manga Studio
             <span className="sr-only"> (site, abre em nova aba)</span>
-          </a>
-          <span aria-hidden>·</span>
-          <a
-            href="https://www.instagram.com/fiapodemangastudio/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-11 items-center gap-1.5 font-bold text-white transition-colors hover:text-yellow"
-          >
-            <InstagramIcon className="size-4" />@fiapodemangastudio
-            <span className="sr-only"> no Instagram (abre em nova aba)</span>
           </a>
         </p>
       </div>
