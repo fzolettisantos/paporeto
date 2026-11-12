@@ -12,7 +12,7 @@ import { RankingPosition, type Move } from "./RankingPosition";
 import { VoteButton, type VoteButtonState } from "./VoteButton";
 import { VoteProgress } from "./VoteProgress";
 
-const LEADER_TROPHIES: Partial<Record<RankingSlug, { src: string; alt: string; width: number; height: number }>> = {
+const LEADER_TROPHIES: Partial<Record<RankingSlug, { src: string; alt: string; width: number; height: number; className?: string }>> = {
   "falou-merda": {
     src: "/rankings/falou-merda-trophy-icon.webp",
     alt: "Taça do Troféu Falou Merda: 1º lugar",
@@ -24,6 +24,14 @@ const LEADER_TROPHIES: Partial<Record<RankingSlug, { src: string; alt: string; w
     alt: "Taça d'O Sábio da Resenha: 1º lugar",
     width: 197,
     height: 256,
+  },
+  // Selo largo: fica acima do botão de compartilhar, sem invadir o texto.
+  "bala-do-veio": {
+    src: "/rankings/bala-do-veio-badge-icon.webp",
+    alt: "Selo do Bala do Véio: 1º lugar",
+    width: 256,
+    height: 167,
+    className: "-top-7 right-2 h-14 sm:-top-8 sm:right-3 sm:h-16",
   },
 };
 
@@ -90,7 +98,9 @@ export function RankingCard({
             alt={trophy.alt}
             width={trophy.width}
             height={trophy.height}
-            className="pointer-events-none absolute -top-5 right-2 h-16 w-auto drop-shadow-[0_4px_10px_rgba(255,210,63,0.45)] sm:-top-6 sm:right-3 sm:h-20"
+            className={`pointer-events-none absolute w-auto drop-shadow-[0_4px_10px_rgba(255,210,63,0.45)] ${
+              trophy.className ?? "-top-5 right-2 h-16 sm:-top-6 sm:right-3 sm:h-20"
+            }`}
           />
         ) : null}
         <div className="flex items-center gap-2.5 sm:gap-4">
@@ -106,7 +116,7 @@ export function RankingCard({
             sources={participant.avatarPaths}
             eager={eager}
           />
-          <div className={`min-w-0 flex-1 ${showTrophy ? "pr-12 sm:pr-16" : ""}`}>
+          <div className={`min-w-0 flex-1 ${showTrophy && !trophy?.className ? "pr-12 sm:pr-16" : ""}`}>
             {badge ? (
               <p
                 className={`mb-0.5 inline-block rounded px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider ${
