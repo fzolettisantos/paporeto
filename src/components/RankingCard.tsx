@@ -2,6 +2,8 @@
 
 import { Share2 } from "lucide-react";
 import { motion } from "motion/react";
+import Image from "next/image";
+import { withBase } from "@/config/site";
 import { pickPhrase, RANKINGS } from "@/config/rankings";
 import type { BalaShot, RankedEntry, RankingSlug } from "@/types";
 import { CharacterAvatar } from "./CharacterAvatar";
@@ -41,6 +43,8 @@ export function RankingCard({
   const barColor = leader ? "#FFD23F" : copy.kind === "positive" ? "#32D583" : "#F04438";
   const { participant } = entry;
   const isStatic = copy.mode === "static";
+  /** Troféu Falou Merda: taça em ícone no canto do 1º colocado. */
+  const showTrophy = slug === "falou-merda" && leader && entry.position === 1;
   const shareButton = (
     <button
       type="button"
@@ -64,6 +68,15 @@ export function RankingCard({
           leader ? "border-yellow bg-gradient-to-br from-yellow/12 to-surface" : "border-line bg-surface"
         } ${move ? "animate-flash" : ""}`}
       >
+        {showTrophy ? (
+          <Image
+            src={withBase("/rankings/falou-merda-trophy-icon.webp")}
+            alt="Taça do Troféu Falou Merda: 1º lugar"
+            width={206}
+            height={256}
+            className="pointer-events-none absolute -top-5 right-2 h-16 w-auto drop-shadow-[0_4px_10px_rgba(255,210,63,0.45)] sm:-top-6 sm:right-3 sm:h-20"
+          />
+        ) : null}
         <div className="flex items-center gap-2.5 sm:gap-4">
           <RankingPosition position={entry.position} tied={entry.tied} leader={leader} move={move} />
           <CharacterAvatar
@@ -77,7 +90,7 @@ export function RankingCard({
             sources={participant.avatarPaths}
             eager={eager}
           />
-          <div className="min-w-0 flex-1">
+          <div className={`min-w-0 flex-1 ${showTrophy ? "pr-12 sm:pr-16" : ""}`}>
             {badge ? (
               <p
                 className={`mb-0.5 inline-block rounded px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider ${
