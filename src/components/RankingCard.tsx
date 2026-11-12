@@ -3,6 +3,7 @@
 import { Share2 } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
+import { LEADER_BADGES } from "@/config/leader-badges";
 import { withBase } from "@/config/site";
 import { pickPhrase, RANKINGS } from "@/config/rankings";
 import type { BalaShot, RankedEntry, RankingSlug } from "@/types";
@@ -11,29 +12,6 @@ import { ShotsTable } from "./ShotsTable";
 import { RankingPosition, type Move } from "./RankingPosition";
 import { VoteButton, type VoteButtonState } from "./VoteButton";
 import { VoteProgress } from "./VoteProgress";
-
-const LEADER_TROPHIES: Partial<Record<RankingSlug, { src: string; alt: string; width: number; height: number; className?: string }>> = {
-  "falou-merda": {
-    src: "/rankings/falou-merda-trophy-icon.webp",
-    alt: "Taça do Troféu Falou Merda: 1º lugar",
-    width: 206,
-    height: 256,
-  },
-  sabio: {
-    src: "/rankings/sabio-trophy-icon.webp",
-    alt: "Taça d'O Sábio da Resenha: 1º lugar",
-    width: 197,
-    height: 256,
-  },
-  // Selo largo: fica acima do botão de compartilhar, sem invadir o texto.
-  "bala-do-veio": {
-    src: "/rankings/bala-do-veio-badge-icon.webp",
-    alt: "Selo do Bala do Véio: 1º lugar",
-    width: 256,
-    height: 167,
-    className: "-top-7 right-2 h-14 sm:-top-8 sm:right-3 sm:h-16",
-  },
-};
 
 export function RankingCard({
   slug,
@@ -67,7 +45,7 @@ export function RankingCard({
   const { participant } = entry;
   const isStatic = copy.mode === "static";
   /** Taça em ícone no canto do 1º colocado (rankings com troféu). */
-  const trophy = LEADER_TROPHIES[slug];
+  const trophy = LEADER_BADGES[slug];
   const showTrophy = Boolean(trophy) && leader && entry.position === 1;
   const shareButton = (
     <button
@@ -116,7 +94,7 @@ export function RankingCard({
             sources={participant.avatarPaths}
             eager={eager}
           />
-          <div className={`min-w-0 flex-1 ${showTrophy && !trophy?.className ? "pr-12 sm:pr-16" : ""}`}>
+          <div className={`min-w-0 flex-1 ${showTrophy && !isStatic ? "pr-12 sm:pr-16" : ""}`}>
             {badge ? (
               <p
                 className={`mb-0.5 inline-block rounded px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider ${

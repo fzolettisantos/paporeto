@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import faces from "@/generated/character-faces.json";
 import illustrations from "@/generated/ranking-illustrations.json";
+import { LEADER_BADGES } from "@/config/leader-badges";
 import { PERSONAGENS } from "@/config/personagens";
 import { absoluteUrl } from "@/config/site";
 import { RANKING_SLUGS } from "@/types";
@@ -18,7 +19,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "hourly" as const,
       priority: 0.9,
-      images: ILLUSTRATIONS[slug] ? [absoluteUrl(ILLUSTRATIONS[slug]!.src)] : undefined,
+      images: [ILLUSTRATIONS[slug]?.src, LEADER_BADGES[slug]?.src]
+        .filter((src): src is string => Boolean(src))
+        .map((src) => absoluteUrl(src)),
     })),
     {
       url: absoluteUrl("/bancada"),
