@@ -1,12 +1,12 @@
 import type { BalaShot } from "@/types";
 
 /**
- * BALA DO VÉIO — dados do programa (informados pelo Caique). Atualização de 11/11 (72 tiros).
+ * BALA DO VÉIO — dados do programa (informados pelo Caique). Atualização de 12/11 (82 tiros).
  * Sem Supabase, o site mostra estes dados; com Supabase, a mesma lista é a carga inicial do banco
  * (supabase/papo-reto.sql) e as próximas atualizações são feitas pelo painel.
  * A ordem do ranking segue o total de tiros de cada um.
  */
-export const BALA_UPDATED_AT = "2026-11-11T15:04:00-03:00";
+export const BALA_UPDATED_AT = "2026-11-12T19:00:00-03:00";
 
 /** Fonte dos dados, exibida no topo da aba. */
 export const BALA_SOURCE = "Data Caique informa";
@@ -15,7 +15,7 @@ const shot = (
   id: string,
   quantity: number,
   location: string | null,
-  extra: { place?: string; weapon?: string; note?: string; episode?: number; time?: string } = {},
+  extra: { place?: string; weapon?: string; note?: string; episode?: number; time?: string; video?: string } = {},
 ): BalaShot => ({
   id,
   quantity,
@@ -25,6 +25,7 @@ const shot = (
   note: extra.note ?? null,
   episode: extra.episode ?? null,
   episodeTime: extra.time ?? null,
+  videoUrl: extra.video ?? null,
 });
 
 export const BALA_SHOTS: Record<string, BalaShot[]> = {
@@ -48,6 +49,7 @@ export const BALA_SHOTS: Record<string, BalaShot[]> = {
     shot("mano-1", 2, "Na testa"),
     shot("mano-2", 2, "Na cara"),
     shot("mano-3", 1, "Local não definido"),
+    shot("mano-4", 10, "Na testa", { time: "1:05:52", video: "https://www.youtube.com/watch?v=qL2svAaFvd0" }),
   ],
   "veio-tricolor": [
     shot("veio-tricolor-1", 1, "Na própria cabeça", { note: "Se apanhar do Mano e do Kleber" }),

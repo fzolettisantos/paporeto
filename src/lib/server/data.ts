@@ -176,11 +176,11 @@ export async function getRankingResults(
         if (config.id) {
           const { data, error } = await sb
             .from("static_shots")
-            .select("id, participant_id, quantity, location, place, weapon, note, episode, episode_time, updated_at")
+            .select("id, participant_id, quantity, location, place, weapon, note, episode, episode_time, video_url, updated_at")
             .eq("ranking_id", config.id)
             .order("created_at");
           if (error) throw new Error(`Erro ao carregar os tiros: ${error.message}`);
-          for (const row of (data ?? []) as (Omit<BalaShot, "id" | "episodeTime"> & { id: string; participant_id: string; episode_time: string | null; updated_at: string })[]) {
+          for (const row of (data ?? []) as (Omit<BalaShot, "id" | "episodeTime" | "videoUrl"> & { id: string; participant_id: string; episode_time: string | null; video_url: string | null; updated_at: string })[]) {
             (shots[row.participant_id] ??= []).push({
               id: row.id,
               quantity: row.quantity,
@@ -190,6 +190,7 @@ export async function getRankingResults(
               note: row.note,
               episode: row.episode,
               episodeTime: row.episode_time,
+              videoUrl: row.video_url,
             });
             stamps.push(row.updated_at);
           }

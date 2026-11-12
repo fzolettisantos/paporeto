@@ -10,6 +10,7 @@ import { isRankingSlug, SLUG_PATTERN } from "@/lib/validation";
 import { ADMIN_COOKIE, requireAdmin } from "@/lib/server/admin-auth";
 import { getServiceClient } from "@/lib/server/supabase";
 import { EXPRESSION_STATES, type AvatarPaths, type ExpressionState } from "@/types";
+import { cleanYoutubeUrl } from "@/lib/youtube";
 
 const IMAGE_TYPES: Record<string, string> = { "image/webp": "webp", "image/png": "png", "image/avif": "avif", "image/jpeg": "jpg" };
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -172,6 +173,9 @@ export async function addShot(form: FormData) {
   const episodeRaw = text(form, "episode", 5);
   const episode = episodeRaw ? Number(episodeRaw) : null;
   const episodeTime = text(form, "episode_time", 8) || null;
+  const videoRaw = text(form, "video_url", 300);
+  const videoUrl = videoRaw ? cleanYoutubeUrl(videoRaw) : null;
+  if (videoRaw && !videoUrl) done("Link da evidência: cole um link do YouTube (vídeo ou live).", true);
   if (episode !== null && (!Number.isInteger(episode) || episode < 1 || episode > 99999)) done("Número do episódio inválido.", true);
   if (episodeTime && !/^\d{1,2}(:\d{2}){1,2}$/.test(episodeTime)) done("Tempo da evidência no formato 1:08:12 ou 08:12.", true);
   if (!UUID.test(participantId)) done("Participante inválido.", true);
@@ -179,7 +183,7 @@ export async function addShot(form: FormData) {
   const sb = getServiceClient();
   const { data: ranking } = await sb.from("rankings").select("mode").eq("id", rankingId).single();
   if (ranking?.mode !== "static") done("Esse ranking não tem tiros.", true);
-  const { error } = await sb.from("static_shots").insert({ ranking_id: rankingId, participant_id: participantId, quantity, location, place, weapon, note, episode, episode_time: episodeTime });
+  const { error } = await sb.from("static_shots").insert({ ranking_id: rankingId, participant_id: participantId, quantity, location, place, weapon, note, episode, episode_time: episodeTime, video_url: videoUrl });
   if (error) done(`Erro ao salvar tiros: ${error.message}`, true);
   done("Tiros registrados.");
 }

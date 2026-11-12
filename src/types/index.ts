@@ -79,6 +79,8 @@ export interface BalaShot {
   episode: number | null;
   /** Evidência: tempo no episódio (ex.: "1:08:12"). Opcional. */
   episodeTime: string | null;
+  /** Evidência: link do vídeo no YouTube (abre no tempo da evidência). Opcional. */
+  videoUrl: string | null;
   /** Motivo ou observação (ex.: "Porque falou da Dona Bila"). Opcional. */
   note: string | null;
 }

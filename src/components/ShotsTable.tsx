@@ -1,12 +1,37 @@
 import { Fragment } from "react";
+import { Play } from "lucide-react";
 import { formatNumber } from "@/lib/ranking";
+import { youtubeEvidenceLink } from "@/lib/youtube";
 import type { BalaShot } from "@/types";
 
 export const shotsTotal = (shots: BalaShot[]) => shots.reduce((total, s) => total + s.quantity, 0);
-/** Evidência: "EP 629 · 1:08:12", "EP 360" ou só o tempo. */
-export function formatEvidence(shot: Pick<BalaShot, "episode" | "episodeTime">): string | null {
+/** Evidência: "EP 629 · 1:08:12", "EP 360", só o tempo ou "Vídeo" (quando só há o link). */
+export function formatEvidence(shot: Pick<BalaShot, "episode" | "episodeTime" | "videoUrl">): string | null {
   const parts = [shot.episode ? `EP ${shot.episode}` : null, shot.episodeTime || null].filter(Boolean);
-  return parts.length ? parts.join(" · ") : null;
+  if (parts.length) return parts.join(" · ");
+  return shot.videoUrl ? "Vídeo" : null;
+}
+
+function Evidence({ shot, name }: { shot: BalaShot; name: string }) {
+  const label = formatEvidence(shot);
+  if (!label) return <Empty />;
+  const href = youtubeEvidenceLink(shot.videoUrl, shot.episodeTime);
+  if (!href) return <span className="inline-block rounded bg-surface-2 px-1.5 py-0.5 font-semibold text-white">{label}</span>;
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex min-h-8 items-center gap-1 rounded bg-[#B42318] px-1.5 py-0.5 font-semibold text-white underline-offset-2 transition-colors hover:bg-[#912018] hover:underline"
+    >
+      <Play aria-hidden className="size-3 shrink-0 fill-current" />
+      {label}
+      <span className="sr-only">
+        {" "}— ver no YouTube a evidência dos tiros em {name}
+        {shot.episodeTime ? ` aos ${shot.episodeTime}` : ""} (abre em nova aba)
+      </span>
+    </a>
+  );
 }
 
 export const shotsLabel = (n: number) => `${formatNumber(n)} ${n === 1 ? "tiro" : "tiros"}`;
@@ -19,7 +44,7 @@ const Empty = () => (
 
 /**
  * Tabela de tiros do Bala do Véio no box de cada participante (cabe em 360px, sem rolagem lateral).
- * Local do tiro = onde acerta no corpo; Localidade = onde o Véio vai dar os tiros; Evidência = episódio e tempo.
+ * Local do tiro = onde acerta no corpo; Localidade = onde o Véio vai dar os tiros; Evidência = episódio, tempo e link do vídeo.
  * Colunas sem nenhum dado no box não aparecem; o motivo vai numa linha abaixo do registro.
  */
 export function ShotsTable({ shots, name }: { shots: BalaShot[]; name: string }) {
@@ -58,11 +83,7 @@ export function ShotsTable({ shots, name }: { shots: BalaShot[]; name: string })
                   {showWeapon ? <td className={`${cell} text-muted`}>{shot.weapon || <Empty />}</td> : null}
                   {showEvidence ? (
                     <td className={`${cell} tabular`}>
-                      {formatEvidence(shot) ? (
-                        <span className="inline-block rounded bg-surface-2 px-1.5 py-0.5 font-semibold text-white">{formatEvidence(shot)}</span>
-                      ) : (
-                        <Empty />
-                      )}
+                      <Evidence shot={shot} name={name} />
                     </td>
                   ) : null}
                 </tr>
