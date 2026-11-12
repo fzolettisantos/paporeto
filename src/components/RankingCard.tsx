@@ -12,6 +12,21 @@ import { RankingPosition, type Move } from "./RankingPosition";
 import { VoteButton, type VoteButtonState } from "./VoteButton";
 import { VoteProgress } from "./VoteProgress";
 
+const LEADER_TROPHIES: Partial<Record<RankingSlug, { src: string; alt: string; width: number; height: number }>> = {
+  "falou-merda": {
+    src: "/rankings/falou-merda-trophy-icon.webp",
+    alt: "Taça do Troféu Falou Merda: 1º lugar",
+    width: 206,
+    height: 256,
+  },
+  sabio: {
+    src: "/rankings/sabio-trophy-icon.webp",
+    alt: "Taça d'O Sábio da Resenha: 1º lugar",
+    width: 197,
+    height: 256,
+  },
+};
+
 export function RankingCard({
   slug,
   entry,
@@ -43,8 +58,9 @@ export function RankingCard({
   const barColor = leader ? "#FFD23F" : copy.kind === "positive" ? "#32D583" : "#F04438";
   const { participant } = entry;
   const isStatic = copy.mode === "static";
-  /** Troféu Falou Merda: taça em ícone no canto do 1º colocado. */
-  const showTrophy = slug === "falou-merda" && leader && entry.position === 1;
+  /** Taça em ícone no canto do 1º colocado (rankings com troféu). */
+  const trophy = LEADER_TROPHIES[slug];
+  const showTrophy = Boolean(trophy) && leader && entry.position === 1;
   const shareButton = (
     <button
       type="button"
@@ -68,12 +84,12 @@ export function RankingCard({
           leader ? "border-yellow bg-gradient-to-br from-yellow/12 to-surface" : "border-line bg-surface"
         } ${move ? "animate-flash" : ""}`}
       >
-        {showTrophy ? (
+        {showTrophy && trophy ? (
           <Image
-            src={withBase("/rankings/falou-merda-trophy-icon.webp")}
-            alt="Taça do Troféu Falou Merda: 1º lugar"
-            width={206}
-            height={256}
+            src={withBase(trophy.src)}
+            alt={trophy.alt}
+            width={trophy.width}
+            height={trophy.height}
             className="pointer-events-none absolute -top-5 right-2 h-16 w-auto drop-shadow-[0_4px_10px_rgba(255,210,63,0.45)] sm:-top-6 sm:right-3 sm:h-20"
           />
         ) : null}
