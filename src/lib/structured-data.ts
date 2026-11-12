@@ -13,7 +13,7 @@ export function publisherLd() {
     "@type": "Organization",
     "@id": PUBLISHER_ID,
     name: "Fiapo de Manga Studio",
-    url: "https://www.instagram.com/fiapodemangastudio/",
+    url: "https://www.fiapodemanga.com.br/",
     sameAs: ["https://www.instagram.com/fiapodemangastudio/"],
   };
 }

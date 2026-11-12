@@ -36,7 +36,16 @@ export function Footer({ showCaricatureCredit }: { showCaricatureCredit: boolean
         </ul>
 
         <p className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-line pt-4 text-sm text-muted">
-          Feito por <strong className="text-white">Fiapo de Manga Studio</strong>
+          Feito por
+          <a
+            href="https://www.fiapodemanga.com.br/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 items-center font-bold text-white underline decoration-yellow/60 underline-offset-4 transition-colors hover:text-yellow"
+          >
+            Fiapo de Manga Studio
+            <span className="sr-only"> (site, abre em nova aba)</span>
+          </a>
           <span aria-hidden>·</span>
           <a
             href="https://www.instagram.com/fiapodemangastudio/"

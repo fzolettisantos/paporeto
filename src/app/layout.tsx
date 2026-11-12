@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description: HOME_SEO.description,
   applicationName: site.name,
   keywords: SEO_KEYWORDS_BASE,
-  authors: [{ name: "Fiapo de Manga Studio", url: "https://www.instagram.com/fiapodemangastudio/" }],
+  authors: [{ name: "Fiapo de Manga Studio", url: "https://www.fiapodemanga.com.br/" }],
   creator: "Fiapo de Manga Studio",
   publisher: "Fiapo de Manga Studio",
   category: "sports",
