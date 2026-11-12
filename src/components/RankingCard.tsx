@@ -70,17 +70,6 @@ export function RankingCard({
           leader ? "border-yellow bg-gradient-to-br from-yellow/12 to-surface" : "border-line bg-surface"
         } ${move ? "animate-flash" : ""}`}
       >
-        {showTrophy && trophy ? (
-          <Image
-            src={withBase(trophy.src)}
-            alt={trophy.alt}
-            width={trophy.width}
-            height={trophy.height}
-            className={`pointer-events-none absolute w-auto drop-shadow-[0_4px_10px_rgba(255,210,63,0.45)] ${
-              trophy.className ?? "-top-5 right-2 h-16 sm:-top-6 sm:right-3 sm:h-20"
-            }`}
-          />
-        ) : null}
         <div className="flex items-center gap-2.5 sm:gap-4">
           <RankingPosition position={entry.position} tied={entry.tied} leader={leader} move={move} />
           <CharacterAvatar
@@ -94,7 +83,7 @@ export function RankingCard({
             sources={participant.avatarPaths}
             eager={eager}
           />
-          <div className={`min-w-0 flex-1 ${showTrophy && !isStatic ? "pr-12 sm:pr-16" : ""}`}>
+          <div className="min-w-0 flex-1">
             {badge ? (
               <p
                 className={`mb-0.5 inline-block rounded px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider ${
@@ -110,8 +99,21 @@ export function RankingCard({
             ) : null}
             <p className="text-[14px] leading-snug text-muted">“{pickPhrase(slug, entry.state, participant.slug, index + 1)}”</p>
           </div>
-          {/* Ranking estático: sem votos nem botão de voto, só compartilhar. */}
-          {isStatic ? shareButton : null}
+          {/* Coluna da direita: selo do líder e, no ranking estático, o compartilhar. */}
+          {showTrophy || isStatic ? (
+            <div className="flex shrink-0 flex-col items-center gap-2">
+              {showTrophy && trophy ? (
+                <Image
+                  src={withBase(trophy.src)}
+                  alt={trophy.alt}
+                  width={trophy.width}
+                  height={trophy.height}
+                  className="size-14 rotate-6 object-contain drop-shadow-[0_4px_10px_rgba(255,210,63,0.4)] sm:size-[72px]"
+                />
+              ) : null}
+              {isStatic ? shareButton : null}
+            </div>
+          ) : null}
         </div>
 
         {isStatic && shots ? <ShotsTable shots={shots} name={participant.name} /> : null}
