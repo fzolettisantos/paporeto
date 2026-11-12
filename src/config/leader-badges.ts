@@ -16,10 +16,11 @@ export type LeaderBadge = {
 
 export const LEADER_BADGES: Partial<Record<RankingSlug, LeaderBadge>> = {
   "falou-merda": {
-    src: "/rankings/falou-merda-trophy-icon.webp",
-    alt: "Taça dourada do Troféu Falou Merda, prêmio do 1º colocado no ranking do Papo Reto",
-    width: 154,
+    src: "/rankings/falou-merda-badge-holo.webp",
+    alt: "Selo holográfico do Troféu Falou Merda com taça dourada, prêmio do 1º colocado no ranking do Papo Reto",
+    width: 192,
     height: 192,
+    className: "-top-6 right-2 h-14 sm:-top-7 sm:right-3 sm:h-16",
   },
   sabio: {
     src: "/rankings/sabio-badge-holo.webp",
