@@ -30,11 +30,14 @@ describe("Bala do Véio é estático", () => {
     const perPerson = Object.values(shots).map((list) => list.reduce((t, s) => t + s.quantity, 0));
     expect(results!.totalShots).toBe(perPerson.reduce((a, b) => a + b, 0));
     expect(shotsTotal(shots.serdan!)).toBe(19);
-    expect(shotsTotal(shots.kleber!)).toBe(20);
-    expect(results!.totalShots).toBe(82);
+    expect(shotsTotal(shots.kleber!)).toBe(21);
+    expect(shotsTotal(shots.mano!)).toBe(15);
+    expect(shotsTotal(shots["barbudo-palmeirense"]!)).toBe(2);
+    expect(results!.totalShots).toBe(87);
     expect(shotsLabel(1)).toBe("1 tiro");
     expect(formatEvidence(shots["veio-tricolor"]![3]!)).toBe("EP 629 · 1:08:12");
-    expect(formatEvidence(shots.nem![0]!)).toBeNull();
+    expect(formatEvidence(shots.nem![0]!)).toBe("2:17");
+    expect(formatEvidence(shots.oberdan![0]!)).toBeNull();
     expect(formatEvidence(shots.serdan![0]!)).toBeNull();
     expect(shotsLabel(1234)).toBe("1.234 tiros");
   });

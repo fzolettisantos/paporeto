@@ -1,12 +1,12 @@
 import type { BalaShot } from "@/types";
 
 /**
- * BALA DO VÉIO — dados do programa (informados pelo Caique). Atualização de 12/11 (82 tiros).
+ * BALA DO VÉIO — dados do programa (informados pelo Caique). Atualização de 16/11 (87 tiros).
  * Sem Supabase, o site mostra estes dados; com Supabase, a mesma lista é a carga inicial do banco
  * (supabase/papo-reto.sql) e as próximas atualizações são feitas pelo painel.
  * A ordem do ranking segue o total de tiros de cada um.
  */
-export const BALA_UPDATED_AT = "2026-11-12T19:00:00-03:00";
+export const BALA_UPDATED_AT = "2026-11-16T12:00:00-03:00";
 
 /** Fonte dos dados, exibida no topo da aba. */
 export const BALA_SOURCE = "Data Caique informa";
@@ -33,7 +33,8 @@ export const BALA_SHOTS: Record<string, BalaShot[]> = {
     shot("kleber-1", 11, "Local não definido", { note: "+ ameaça com faca" }),
     shot("kleber-2", 2, "Na perna"),
     shot("kleber-3", 4, "Na testa"),
-    shot("kleber-4", 3, "Na cabeça"),
+    shot("kleber-4", 1, "Na testa", { time: "25:51", video: "https://www.youtube.com/watch?v=wFyVIWYRss0" }),
+    shot("kleber-5", 3, "Na cabeça"),
   ],
   serdan: [
     shot("serdan-1", 18, "Local não definido"),
@@ -49,7 +50,7 @@ export const BALA_SHOTS: Record<string, BalaShot[]> = {
     shot("mano-1", 2, "Na testa"),
     shot("mano-2", 2, "Na cara"),
     shot("mano-3", 1, "Local não definido"),
-    shot("mano-4", 10, "Na testa", { time: "1:05:52", video: "https://www.youtube.com/watch?v=qL2svAaFvd0" }),
+    shot("mano-4", 10, "Local não definido", { time: "1:05:52", video: "https://www.youtube.com/watch?v=qL2svAaFvd0" }),
   ],
   "veio-tricolor": [
     shot("veio-tricolor-1", 1, "Na própria cabeça", { note: "Se apanhar do Mano e do Kleber" }),
@@ -59,13 +60,17 @@ export const BALA_SHOTS: Record<string, BalaShot[]> = {
     shot("veio-tricolor-5", 1, "Na própria cabeça", { note: "Se perder pra alguém do programa na disputa de quem tem o maior QI" }),
   ],
   nem: [
-    shot("nem-1", 2, "Na testa"),
-  ],
-  "luiz-gusttavo": [
-    shot("luiz-gusttavo-1", 1, "Na testa"),
+    shot("nem-1", 2, "Na boca", { note: "“Eu encho a boca dele de pólvora”", time: "2:17", video: "https://www.youtube.com/watch?v=8-DITIqlt3E" }),
   ],
   carabina: [
     shot("carabina-1", 1, "Na testa"),
+    shot("carabina-2", 1, "Na cabeça", { time: "11:56", video: "https://www.youtube.com/watch?v=QEkvODotzCM" }),
+  ],
+  "barbudo-palmeirense": [
+    shot("barbudo-palmeirense-1", 2, "Na testa", { time: "1:55:15", video: "https://www.youtube.com/watch?v=sW2kORN7sFk" }),
+  ],
+  "luiz-gusttavo": [
+    shot("luiz-gusttavo-1", 1, "Na testa"),
   ],
   mastigasamba: [
     shot("mastigasamba-1", 1, "Local não definido", { note: "“Foda-se o Mastigasamba”" }),
@@ -81,5 +86,8 @@ export const BALA_SHOTS: Record<string, BalaShot[]> = {
   ],
   dentinho: [
     shot("dentinho-1", 1, null),
+  ],
+  "quem-encher-o-saco": [
+    shot("quem-encher-o-saco-1", 1, "Na cabeça", { time: "10:41", video: "https://www.youtube.com/watch?v=fopTIgOlFe0" }),
   ],
 };
